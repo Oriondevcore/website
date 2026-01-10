@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        // GitHub Pages SPA redirect fix
+        // This handles routing for single-page applications
+        (function() {
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect != location.href) {
+                history.replaceState(null, null, redirect);
+            }
+        })();
+        
+        // If no stored redirect, try to fix the path
+        if (!sessionStorage.redirect) {
+            var path = window.location.pathname;
+            
+            // If path doesn't end with .html and isn't root, redirect to index
+            if (path !== '/' && !path.endsWith('.html')) {
+                window.location.replace('/');
+            } else {
+                // Otherwise redirect to home
+                window.location.replace('/');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div style="font-family: Arial; text-align: center; padding: 50px; background: #0a192f; color: #64ffda; min-height: 100vh;">
+        <h1>⚡ Redirecting...</h1>
+        <p>Taking you back to Orion Dev Core...</p>
+    </div>
+</body>
+</html>
