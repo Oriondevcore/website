@@ -1,1 +1,89 @@
-
+{
+  "name": "Orion Dev Core - AI Automation Suite",
+  "short_name": "Orion Dev",
+  "description": "AI-powered automation solutions for South African businesses. Legal, Hospitality, Retail & Gaming.",
+  "start_url": "/website/",
+  "scope": "/website/",
+  "display": "standalone",
+  "background_color": "#0a192f",
+  "theme_color": "#0a192f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/orion-core.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/orion-core.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "business",
+    "productivity",
+    "finance"
+  ],
+  "lang": "en-ZA",
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "Legal Suite",
+      "short_name": "Legal",
+      "description": "AI-powered legal practice management",
+      "url": "/website/demos/legal.html",
+      "icons": [
+        {
+          "src": "icons/legal.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Hotel Suite",
+      "short_name": "Hotel",
+      "description": "24/7 AI concierge for hotels",
+      "url": "/website/demos/hotel.html",
+      "icons": [
+        {
+          "src": "icons/hotel.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "mPOS",
+      "short_name": "mPOS",
+      "description": "Mobile point of sale system",
+      "url": "/website/demos/mpos.html",
+      "icons": [
+        {
+          "src": "icons/mpos.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Surge Game",
+      "short_name": "Surge",
+      "description": "Play the crash game",
+      "url": "/website/demos/surge.html",
+      "icons": [
+        {
+          "src": "icons/surge.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/orion-core.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ]
+}
