@@ -58,7 +58,7 @@
       "name": "mPOS",
       "short_name": "mPOS",
       "description": "Mobile point of sale system",
-      "url": "/website/demos/mpos.html",
+      "url": "/website/demo/mpos.html",
       "icons": [
         {
           "src": "icons/mpos.png",
@@ -70,7 +70,7 @@
       "name": "Surge Game",
       "short_name": "Surge",
       "description": "Play the crash game",
-      "url": "/website/demos/surge.html",
+      "url": "/website/demo/surge.html",
       "icons": [
         {
           "src": "icons/surge.png",
