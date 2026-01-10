@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a192f">
+    <title>Orion Surge - Play Free</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../icons/surge.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a192f;
+            --secondary: #112240;
+            --accent: #64ffda;
+            --text: #8892b0;
+            --text-bright: #ccd6f6;
+            --surge-red: #ff4444;
+            --surge-gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header img {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 25px var(--surge-gold));
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .header h1 {
+            color: var(--text-bright);
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px var(--surge-gold);
+        }
+
+        .header p {
+            color: var(--surge-gold);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .game-info {
+            background: rgba(17, 34, 64, 0.9);
+            border: 2px solid var(--surge-gold);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .game-info h2 {
+            color: var(--surge-gold);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .game-info p {
+            color: var(--text-bright);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: var(--primary);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card h3 {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .feature-card p {
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+
+        .how-to-play {
+            background: rgba(17, 34, 64, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .how-to-play h2 {
+            color: var(--text-bright);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .how-to-play ol {
+            color: var(--text);
+            padding-left: 25px;
+        }
+
+        .how-to-play li {
+            margin-bottom: 15px;
+            color: var(--text-bright);
+        }
+
+        .form-section {
+            background: rgba(17, 34, 64, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 10px;
+            padding: 40px;
+        }
+
+        .form-section h2 {
+            color: var(--text-bright);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .free-badge {
+            background: var(--surge-gold);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 700;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 5px;
+            background: var(--primary);
+            color: var(--text-bright);
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--surge-gold), #ffed4e);
+            color: var(--primary);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid var(--surge-gold);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .success-message h3 {
+            color: var(--surge-gold);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .success-message p {
+            color: var(--text-bright);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .token-display {
+            background: var(--primary);
+            border: 2px solid var(--surge-gold);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 2rem;
+            color: var(--surge-gold);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .form-section {
+                padding: 25px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">← Back to Home</a>
+
+        <div class="header">
+            <img src="../icons/surge.png" alt="Orion Surge">
+            <h1>⚡ ORION SURGE</h1>
+            <p>Beat the Crash. Win the Rush.</p>
+        </div>
+
+        <div class="game-info">
+            <h2>🎮 The Ultimate Crash Game</h2>
+            <p><strong>Can you cash out before it crashes?</strong></p>
+            <p>Watch the multiplier climb... 1.2x... 2.5x... 5x... 10x...</p>
+            <p style="color: var(--surge-red); font-weight: 700;">But wait too long and you lose everything! ⚠️</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Leaderboards</h3>
+                    <p>Compete globally</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Rewards</h3>
+                    <p>Unlock bonuses</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast Action</h3>
+                    <p>Rounds in seconds</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔥</div>
+                    <h3>Adrenaline</h3>
+                    <p>Pure excitement</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="how-to-play">
+            <h2>📋 How to Play</h2>
+            <ol>
+                <li><strong>Place Your Bet:</strong> Choose how many tokens to wager (minimum 10 tokens)</li>
+                <li><strong>Watch It Rise:</strong> The multiplier starts climbing from 1.0x upwards</li>
+                <li><strong>Cash Out Anytime:</strong> Hit CASH OUT before it crashes to win your bet × multiplier</li>
+                <li><strong>Don't Get Greedy:</strong> The game can crash at ANY moment - timing is everything!</li>
+                <li><strong>Win or Lose:</strong> Cash out in time? You win! Crash before you cash out? You lose your bet.</li>
+            </ol>
+        </div>
+
+        <div class="form-section">
+            <div style="text-align: center;">
+                <span class="free-badge">🎉 100% FREE TO PLAY</span>
+            </div>
+            <h2>🚀 Register & Get 1000 FREE Tokens</h2>
+            <p style="text-align: center; color: var(--accent); margin-bottom: 30px;">
+                Worth R50 - Start playing immediately!
+            </p>
+            
+            <form id="surgeForm">
+                <div class="form-group">
+                    <label for="username">Username (For Leaderboard) *</label>
+                    <input type="text" id="username" name="username" placeholder="Choose your player name" required minlength="3" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional - for bonus notifications)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+27 XX XXX XXXX">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="age" name="age" required>
+                    <label for="age">I confirm I am 18 years or older *</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the terms and conditions *</label>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitBtn">
+                    🎮 Play Free Now - Get 1000 Tokens!
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>🎉 Welcome to Orion Surge!</h3>
+                <div class="token-display">
+                    🪙 1000 FREE TOKENS CREDITED!
+                </div>
+                <p><strong>Username:</strong> <span id="displayUsername"></span></p>
+                <p>Check your email for your login details and game instructions.</p>
+                <p style="color: var(--accent); font-weight: 600; margin-top: 20px;">
+                    Game launching soon! You'll be notified when it's live. 🚀
+                </p>
+                <p style="color: var(--text); font-size: 0.9rem; margin-top: 20px;">
+                    Want more tokens? Visit the in-game shop after launch!
+                </p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(255, 68, 68, 0.1); border: 1px solid var(--surge-red); border-radius: 10px;">
+            <p style="color: var(--text-bright); font-size: 0.9rem;">
+                ⚠️ <strong>Play Responsibly:</strong> Orion Surge is a game of skill and timing. 
+                Always play within your limits and for entertainment purposes only.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('surgeForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        
+        // Replace with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiWuSNgzG98nKuOvTkTPZzlAuvdh52CpLEwXbDjdDP_l2pA-P7xzX6AAkf36hXoQ8/exec';
+
+        // Username validation
+        const usernameInput = document.getElementById('username');
+        usernameInput.addEventListener('input', (e) => {
+            // Only allow alphanumeric and underscores
+            e.target.value = e.target.value.replace(/[^a-zA-Z0-9_]/g, '');
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = '🎮 Creating Your Account...';
+
+            const formData = {
+                action: 'surge_register',
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value || 'Not provided',
+                tokens: 1000,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('displayUsername').textContent = formData.username;
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    alert('Error: ' + (data.message || 'Username may be taken. Try another!'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🎮 Play Free Now - Get 1000 Tokens!';
+                }
+            } catch (error) {
+                alert('Connection error. Please try again or contact graham@oriondevcore.com');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🎮 Play Free Now - Get 1000 Tokens!';
+            }
+        });
+    </script>
+</body>
+</html>
