@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a192f">
+    <title>Orion Legal Suite - Get Started</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../icons/legal.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a192f;
+            --secondary: #112240;
+            --accent: #64ffda;
+            --text: #8892b0;
+            --text-bright: #ccd6f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px #00d4ff);
+        }
+
+        .header h1 {
+            color: var(--text-bright);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        .features {
+            background: rgba(17, 34, 64, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .features h2 {
+            color: var(--text-bright);
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .pricing-box {
+            background: var(--secondary);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .pricing-box h2 {
+            color: var(--text-bright);
+            margin-bottom: 20px;
+        }
+
+        .price-breakdown {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .form-section {
+            background: rgba(17, 34, 64, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 10px;
+            padding: 40px;
+        }
+
+        .form-section h2 {
+            color: var(--text-bright);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 5px;
+            background: var(--primary);
+            color: var(--text-bright);
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .success-message h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            color: var(--text-bright);
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">← Back to Home</a>
+
+        <div class="header">
+            <img src="../icons/legal.png" alt="Orion Legal Suite">
+            <h1>⚖️ Orion Legal Suite</h1>
+            <p>Your AI Partner in Practice</p>
+        </div>
+
+        <div class="features">
+            <h2>What's Included:</h2>
+            <ul class="feature-list">
+                <li><strong>Mintaka AI Engine:</strong> Powered by Gemini 2.0 Flash - Speak or type in all 11 official languages</li>
+                <li><strong>Prescription Safety Net:</strong> Automatic tracking of RAF (3 Years), Medical Malpractice, and Civil claims</li>
+                <li><strong>Document Vault:</strong> Instant generation of NDAs, SLAs, Wills, and Divorce intakes</li>
+                <li><strong>Voice-to-Text Notes:</strong> Dictate case notes while driving; formatted into legal memos</li>
+                <li><strong>Yoco Payment Integration:</strong> Secure payment links sent before consultations</li>
+                <li><strong>Custom Branding:</strong> Your firm's logo, colors, and custom AI agent name</li>
+                <li><strong>24/7 Support:</strong> Server maintenance, updates, and monitoring included</li>
+            </ul>
+        </div>
+
+        <div class="pricing-box">
+            <h2>💰 Investment Breakdown</h2>
+            <div class="price-breakdown">
+                <div class="price-item">
+                    <span>Setup & Integration Fee</span>
+                    <span>R6,786.00</span>
+                </div>
+                <div class="price-item">
+                    <span>First Month Subscription</span>
+                    <span>R769.00</span>
+                </div>
+                <div class="price-total">
+                    <span>Total Due Today</span>
+                    <span>R7,555.00</span>
+                </div>
+            </div>
+            <p style="color: var(--text); font-size: 0.9rem;">Monthly subscription: R769/month (billed after first month)</p>
+        </div>
+
+        <div class="form-section">
+            <h2>🚀 Get Started Now</h2>
+            <form id="legalForm">
+                <div class="form-group">
+                    <label for="firmName">Law Firm Name *</label>
+                    <input type="text" id="firmName" name="firmName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactName">Contact Person Name *</label>
+                    <input type="text" id="contactName" name="contactName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number (WhatsApp) *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+27 XX XXX XXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="numAttorneys">Number of Attorneys</label>
+                    <select id="numAttorneys" name="numAttorneys" required>
+                        <option value="">Select...</option>
+                        <option value="1">1 (Solo Practitioner)</option>
+                        <option value="2-5">2-5</option>
+                        <option value="6-10">6-10</option>
+                        <option value="11-20">11-20</option>
+                        <option value="20+">20+</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="practiceAreas">Primary Practice Areas *</label>
+                    <select id="practiceAreas" name="practiceAreas" required>
+                        <option value="">Select...</option>
+                        <option value="Personal Injury">Personal Injury & RAF Claims</option>
+                        <option value="Family Law">Family Law (Divorce, Maintenance)</option>
+                        <option value="Criminal">Criminal Defense</option>
+                        <option value="Corporate">Corporate & Commercial</option>
+                        <option value="Property">Property & Conveyancing</option>
+                        <option value="Labour">Labour & Employment</option>
+                        <option value="Estate">Estate Planning & Wills</option>
+                        <option value="General">General Practice (Mixed)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="agentName">Preferred AI Agent Name (Optional)</label>
+                    <input type="text" id="agentName" name="agentName" placeholder="e.g., Themis, Justitia, Lex">
+                </div>
+
+                <div class="form-group">
+                    <label for="specialRequests">Special Requirements or Questions</label>
+                    <textarea id="specialRequests" name="specialRequests" placeholder="Any specific features you need? Integration requirements?"></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the terms and conditions and POPIA compliance policy *</label>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitBtn">
+                    💳 Pay R7,555 & Get Started
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>✅ Payment Processing...</h3>
+                <p>You'll be redirected to our secure Yoco payment page.</p>
+                <p>After payment, Graham will contact you within 24 hours to begin your setup!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+    <script>
+        const form = document.getElementById('legalForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        
+        // Replace with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiWuSNgzG98nKuOvTkTPZzlAuvdh52CpLEwXbDjdDP_l2pA-P7xzX6AAkf36hXoQ8/exec';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            const formData = {
+                action: 'legal_demo',
+                firmName: document.getElementById('firmName').value,
+                contactName: document.getElementById('contactName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                numAttorneys: document.getElementById('numAttorneys').value,
+                practiceAreas: document.getElementById('practiceAreas').value,
+                agentName: document.getElementById('agentName').value,
+                specialRequests: document.getElementById('specialRequests').value,
+                amount: 755500, // R7,555.00 in cents
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.paymentUrl) {
+                    // Show success message briefly
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Redirect to Yoco payment page
+                    setTimeout(() => {
+                        window.location.href = data.paymentUrl;
+                    }, 2000);
+                } else {
+                    alert('Error: ' + (data.message || 'Please try again or contact us directly.'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '💳 Pay R7,555 & Get Started';
+                }
+            } catch (error) {
+                alert('Connection error. Please try again or contact graham@oriondevcore.com');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '💳 Pay R7,555 & Get Started';
+            }
+        });
+    </script>
+</body>
+</html>
