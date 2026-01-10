@@ -6,18 +6,18 @@ const RUNTIME_CACHE = 'orion-runtime-v1';
 
 // Files to cache immediately on install
 const PRECACHE_URLS = [
-  '/website/',
-  '/website/index.html',
-  '/website/manifest.json',
-  '/website/demos/legal.html',
-  '/website/demos/hotel.html',
-  '/website/demos/mpos.html',
-  '/website/demos/surge.html',
-  '/website/icons/orion-core.png',
-  '/website/icons/legal.png',
-  '/website/icons/hotel.png',
-  '/website/icons/mpos.png',
-  '/website/icons/surge.png'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/demos/legal.html',
+  '/demos/hotel.html',
+  '/demos/mpos.html',
+  '/demos/surge.html',
+  '/icons/orion-core.png',
+  '/icons/legal.png',
+  '/icons/hotel.png',
+  '/icons/mpos.png',
+  '/icons/surge.png'
 ];
 
 // Install event - cache essential files
@@ -126,10 +126,10 @@ self.addEventListener('push', (event) => {
   const title = data.title || 'Orion Dev Core';
   const options = {
     body: data.body || 'You have a new notification',
-    icon: '/website/icons/orion-core.png',
-    badge: '/website/icons/orion-core.png',
+    icon: '/icons/orion-core.png',
+    badge: '/icons/orion-core.png',
     vibrate: [200, 100, 200],
-    data: data.url || '/website/'
+    data: data.url || '/'
   };
 
   event.waitUntil(
