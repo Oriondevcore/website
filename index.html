@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Orion Dev Core - AI-powered automation solutions for South African businesses. Legal, Hospitality, Retail & Gaming.">
     <meta name="theme-color" content="#0a192f">
     <title>Orion Dev Core | AI Amplifies. I Create.</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="icons/orion-core.png">
+    
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/icons/orion-core.png">
+    <link rel="apple-touch-icon" href="/icons/orion-core.png">
+    
     <style>
         * {
             margin: 0;
@@ -409,7 +412,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
@@ -429,7 +431,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
             <h2>⚡ The Future of South African Automation</h2>
@@ -438,12 +439,10 @@
         </div>
     </section>
 
-    <!-- Apps Section -->
     <section class="apps-section">
         <div class="container">
             <h2 class="section-title">2026 Product Suite</h2>
             <div class="apps-grid">
-                <!-- Legal Suite -->
                 <div class="app-card">
                     <img src="icons/legal.png" alt="Orion Legal" class="app-icon">
                     <h3>Orion Legal Suite</h3>
@@ -452,7 +451,6 @@
                     <a href="demo/legal.html" class="demo-button">Get Started →</a>
                 </div>
 
-                <!-- Hotel Suite -->
                 <div class="app-card">
                     <img src="icons/hotel.png" alt="Orion Hotel" class="app-icon">
                     <h3>Orion Hotel Suite</h3>
@@ -461,7 +459,6 @@
                     <a href="demo/hotel.html" class="demo-button">Request Quote →</a>
                 </div>
 
-                <!-- mPOS -->
                 <div class="app-card">
                     <img src="icons/mpos.png" alt="Orion mPOS" class="app-icon">
                     <h3>Orion mPOS</h3>
@@ -470,7 +467,6 @@
                     <a href="demo/mpos.html" class="demo-button">Get Started →</a>
                 </div>
 
-                <!-- Surge -->
                 <div class="app-card">
                     <img src="icons/surge.png" alt="Orion Surge" class="app-icon">
                     <h3>Orion Surge</h3>
@@ -482,7 +478,6 @@
         </div>
     </section>
 
-    <!-- AI Chat Widget -->
     <div class="chat-widget">
         <button class="chat-button" id="chatToggle" onclick="toggleChat()">💬</button>
         <div class="chat-window" id="chatWindow">
@@ -504,7 +499,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <p>&copy; 2026 Orion Dev Core. All rights reserved.</p>
@@ -519,9 +513,11 @@
     <script>
         // Register Service Worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker registration failed'));
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registered', reg))
+                    .catch(err => console.log('Service Worker registration failed', err));
+            });
         }
 
         // Chat functionality
@@ -530,7 +526,7 @@
         const chatInput = document.getElementById('chatInput');
         const sendButton = document.getElementById('sendButton');
 
-        // Replace with your Google Apps Script Web App URL
+        // Google Apps Script Web App URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDyWUFW0CATeOAvfkbf1gTRCXpVpGES9rLh-esG-zbjG7Cppv_wwhQmC-EgJ5EmC8_/exec';
 
         function toggleChat() {
@@ -564,9 +560,10 @@
             const typingMsg = addMessage('Thinking...', 'typing');
 
             try {
+                // IMPORTANT: Use text/plain to avoid CORS preflight errors with Google Apps Script
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: 'chat',
                         message: message
@@ -582,11 +579,12 @@
                 if (data.success) {
                     addMessage(data.response, 'ai');
                 } else {
-                    addMessage('Sorry, I encountered an error. Please try again or contact us directly.', 'ai');
+                    addMessage('Sorry, I encountered an error.', 'ai');
                 }
             } catch (error) {
+                console.error(error);
                 typingMsg.remove();
-                addMessage('Connection error. Please check your internet and try again.', 'ai');
+                addMessage('Connection error. Please check your internet or try again later.', 'ai');
             }
 
             sendButton.disabled = false;
@@ -603,3 +601,4 @@
     </script>
 </body>
 </html>
+ 
