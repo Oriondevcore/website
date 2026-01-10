@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0a192f">
     <title>Orion Legal Suite - Get Started</title>
-    <link rel="manifest" href="../manifest.json">
+    
+    <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="../icons/legal.png">
+    <link rel="apple-touch-icon" href="../icons/legal.png">
+    
     <style>
         * {
             margin: 0;
@@ -372,12 +375,20 @@
     </div>
 
     <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+    
     <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+
         const form = document.getElementById('legalForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMessage = document.getElementById('successMessage');
         
-        // Replace with your Google Apps Script Web App URL
+        // Google Apps Script Web App URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDyWUFW0CATeOAvfkbf1gTRCXpVpGES9rLh-esG-zbjG7Cppv_wwhQmC-EgJ5EmC8_/exec';
 
         form.addEventListener('submit', async (e) => {
@@ -400,9 +411,10 @@
             };
 
             try {
+                // IMPORTANT: text/plain prevents CORS errors
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(formData)
                 });
 
@@ -423,6 +435,7 @@
                     submitBtn.textContent = '💳 Pay R7,555 & Get Started';
                 }
             } catch (error) {
+                console.error('Fetch error:', error);
                 alert('Connection error. Please try again or contact graham@oriondevcore.com');
                 submitBtn.disabled = false;
                 submitBtn.textContent = '💳 Pay R7,555 & Get Started';
