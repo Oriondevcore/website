@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a192f">
+    <title>Orion Hotel Suite - Request Quote</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" href="../icons/hotel.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a192f;
+            --secondary: #112240;
+            --accent: #64ffda;
+            --text: #8892b0;
+            --text-bright: #ccd6f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px #00d4ff);
+        }
+
+        .header h1 {
+            color: var(--text-bright);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        .features {
+            background: rgba(17, 34, 64, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .features h2 {
+            color: var(--text-bright);
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "🏨";
+            position: absolute;
+            left: 0;
+        }
+
+        .pricing-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tier-card {
+            background: var(--secondary);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .tier-card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .tier-price {
+            color: var(--text-bright);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .tier-note {
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        .form-section {
+            background: rgba(17, 34, 64, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 10px;
+            padding: 40px;
+        }
+
+        .form-section h2 {
+            color: var(--text-bright);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 5px;
+            background: var(--primary);
+            color: var(--text-bright);
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .success-message h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            color: var(--text-bright);
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-section {
+                padding: 25px;
+            }
+
+            .pricing-tiers {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">← Back to Home</a>
+
+        <div class="header">
+            <img src="../icons/hotel.png" alt="Orion Hotel Suite">
+            <h1>🏨 Orion Hotel Suite</h1>
+            <p>The 24/7 Digital Concierge</p>
+        </div>
+
+        <div class="features">
+            <h2>Transform Your Guest Experience:</h2>
+            <ul class="feature-list">
+                <li><strong>Multilingual AI Concierge:</strong> Chat support in English, Afrikaans, Zulu, and isiXhosa (11-language pack available)</li>
+                <li><strong>Instant Service Requests:</strong> Housekeeping, room service, maintenance - routed directly to departments</li>
+                <li><strong>Smart Booking Assistant:</strong> Handles reservation inquiries with natural conversation</li>
+                <li><strong>Emergency Alerts:</strong> Immediate Discord notifications to management and response teams</li>
+                <li><strong>Live Weather Updates:</strong> Real-time forecasts for guest planning</li>
+                <li><strong>Zero Hardware Required:</strong> Guests access via QR code, link, or WhatsApp</li>
+                <li><strong>Custom Training:</strong> AI learns your hotel's specific policies, menus, and procedures</li>
+                <li><strong>POPIA Compliant:</strong> Secure, encrypted, and privacy-focused</li>
+            </ul>
+        </div>
+
+        <div class="pricing-tiers">
+            <div class="tier-card">
+                <h3>⭐⭐⭐ 3 Star</h3>
+                <div class="tier-price">
+                    <strong>Setup:</strong> R2,990<br>
+                    <strong>Monthly:</strong> R299
+                </div>
+                <p class="tier-note">+ R7/room from 35 rooms</p>
+            </div>
+
+            <div class="tier-card">
+                <h3>⭐⭐⭐⭐ 4 Star</h3>
+                <div class="tier-price">
+                    <strong>Setup:</strong> R3,990<br>
+                    <strong>Monthly:</strong> R399
+                </div>
+                <p class="tier-note">+ R9/room from 30 rooms</p>
+            </div>
+
+            <div class="tier-card">
+                <h3>⭐⭐⭐⭐⭐ 5 Star</h3>
+                <div class="tier-price">
+                    <strong>Setup:</strong> R4,999<br>
+                    <strong>Monthly:</strong> R499
+                </div>
+                <p class="tier-note">+ R14/room from 25 rooms</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 40px; padding: 20px; background: rgba(100, 255, 218, 0.05); border-radius: 10px;">
+            <p style="color: var(--text-bright); font-size: 1.1rem;">
+                <strong>4 Languages Included:</strong> English, Afrikaans, Zulu, Xhosa<br>
+                <em style="color: var(--accent);">Full 11-Language Pack: +R199/month</em>
+            </p>
+        </div>
+
+        <div class="form-section">
+            <h2>📋 Request Your Custom Quote</h2>
+            <form id="hotelForm">
+                <div class="form-group">
+                    <label for="hotelName">Hotel Name *</label>
+                    <input type="text" id="hotelName" name="hotelName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="starRating">Star Rating *</label>
+                    <select id="starRating" name="starRating" required>
+                        <option value="">Select...</option>
+                        <option value="3">⭐⭐⭐ 3 Star</option>
+                        <option value="4">⭐⭐⭐⭐ 4 Star</option>
+                        <option value="5">⭐⭐⭐⭐⭐ 5 Star</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="numRooms">Total Number of Rooms *</label>
+                    <input type="number" id="numRooms" name="numRooms" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactName">Contact Person Name *</label>
+                    <input type="text" id="contactName" name="contactName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number (WhatsApp) *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+27 XX XXX XXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pms">Current Property Management System (if any)</label>
+                    <input type="text" id="pms" name="pms" placeholder="e.g., Nightsbridge, Opera, RoomRaccoon">
+                </div>
+
+                <div class="form-group">
+                    <label for="languages">Language Requirements</label>
+                    <select id="languages" name="languages">
+                        <option value="standard">Standard (4 Languages: EN, AF, ZU, XH)</option>
+                        <option value="full">Full 11-Language Pack (+R199/month)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="specialRequests">Special Requirements or Questions</label>
+                    <textarea id="specialRequests" name="specialRequests" placeholder="Tell us about your hotel's unique needs... Restaurant menus? Spa services? Conference facilities? Integration requirements?"></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the terms and conditions and POPIA compliance policy *</label>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitBtn">
+                    📧 Request Custom Quote
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>✅ Quote Request Received!</h3>
+                <p><strong>Thank you for your interest in Orion Hotel Suite!</strong></p>
+                <p>Graham will review your hotel's requirements and send you a detailed custom quote within 24 hours.</p>
+                <p>Expected response: <strong id="responseTime"></strong></p>
+                <br>
+                <p style="color: var(--accent);">📞 Questions? Call +27 72 497 1810</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('hotelForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        
+        // Replace with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiWuSNgzG98nKuOvTkTPZzlAuvdh52CpLEwXbDjdDP_l2pA-P7xzX6AAkf36hXoQ8/exec';
+
+        // Calculate response time
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(17, 0, 0, 0); // 5 PM next day
+        document.getElementById('responseTime').textContent = tomorrow.toLocaleDateString('en-ZA', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) + ' by 5:00 PM';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending Request...';
+
+            const formData = {
+                action: 'hotel_quote',
+                hotelName: document.getElementById('hotelName').value,
+                starRating: document.getElementById('starRating').value,
+                numRooms: document.getElementById('numRooms').value,
+                contactName: document.getElementById('contactName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                pms: document.getElementById('pms').value,
+                languages: document.getElementById('languages').value,
+                specialRequests: document.getElementById('specialRequests').value,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    alert('Error: ' + (data.message || 'Please try again or contact us directly.'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '📧 Request Custom Quote';
+                }
+            } catch (error) {
+                alert('Connection error. Please try again or contact graham@oriondevcore.com');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📧 Request Custom Quote';
+            }
+        });
+    </script>
+</body>
+</html>
