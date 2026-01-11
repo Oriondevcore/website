@@ -2,603 +2,320 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Orion Dev Core - AI-powered automation solutions for South African businesses. Legal, Hospitality, Retail & Gaming.">
-    <meta name="theme-color" content="#0a192f">
-    <title>Orion Dev Core | AI Amplifies. I Create.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion Dev Core | Enterprise Automation Solutions</title>
+    <meta name="description" content="South Africa's premier AI automation for Legal and Hospitality sectors.">
     
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="/icons/orion-core.png">
-    <link rel="apple-touch-icon" href="/icons/orion-core.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* --- CORPORATE THEME CONFIGURATION --- */
         :root {
-            --primary: #0a192f;
-            --secondary: #112240;
-            --accent: #64ffda;
-            --text: #8892b0;
-            --text-bright: #ccd6f6;
-            --bolt-blue: #00d4ff;
+            --primary-navy: #0f172a;  /* Deep, trustworthy blue */
+            --accent-gold: #c29d59;   /* Premium/Value */
+            --text-grey: #64748b;     /* Readable grey */
+            --bg-light: #f8fafc;      /* Soft white */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--primary-navy);
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, .navbar-brand {
+            font-family: 'Playfair Display', serif;
         }
 
-        /* Header */
-        header {
-            padding: 30px 0;
-            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        /* --- NAVIGATION --- */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+            padding: 15px 0;
         }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo img {
-            width: 60px;
-            height: 60px;
-            filter: drop-shadow(0 0 10px var(--bolt-blue));
-        }
-
-        .logo-text h1 {
-            color: var(--text-bright);
-            font-size: 1.8rem;
+        .navbar-brand {
             font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--primary-navy);
+            letter-spacing: -0.5px;
         }
 
-        .logo-text p {
-            color: var(--accent);
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 2px;
+        /* --- HERO SECTION --- */
+        .hero-section {
+            background-color: var(--primary-navy);
+            color: white;
+            padding: 80px 0 100px 0;
+            position: relative;
         }
-
-        .contact-info {
-            text-align: right;
+        
+        .hero-title {
+            font-size: 2.8rem;
+            line-height: 1.1;
+            margin-bottom: 25px;
         }
-
-        .contact-info a {
-            color: var(--accent);
-            text-decoration: none;
-            display: block;
-            margin: 5px 0;
-            font-size: 0.9rem;
-        }
-
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 60px 0;
-        }
-
-        .hero h2 {
-            font-size: 3rem;
-            color: var(--text-bright);
-            margin-bottom: 20px;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 20px var(--bolt-blue), 0 0 30px var(--bolt-blue); }
-            to { text-shadow: 0 0 30px var(--bolt-blue), 0 0 40px var(--bolt-blue); }
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            color: var(--text);
-            max-width: 800px;
-            margin: 0 auto 40px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: var(--accent);
-            color: var(--primary);
-            padding: 15px 40px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 700;
+        
+        .hero-subtitle {
             font-size: 1.1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+            color: #94a3b8; /* Lighter grey for dark background */
+            font-weight: 300;
+            margin-bottom: 40px;
+            max-width: 600px;
         }
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.4);
-        }
-
-        /* Apps Grid */
-        .apps-section {
-            padding: 60px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--text-bright);
-            margin-bottom: 50px;
-        }
-
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .app-card {
-            background: rgba(17, 34, 64, 0.8);
-            border: 1px solid rgba(100, 255, 218, 0.1);
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .app-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.2);
-        }
-
-        .app-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            filter: drop-shadow(0 0 15px var(--bolt-blue));
-        }
-
-        .app-card h3 {
-            color: var(--text-bright);
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .app-card p {
-            color: var(--text);
-            margin-bottom: 20px;
-            min-height: 60px;
-        }
-
-        .price {
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-
-        .demo-button {
+        .experience-badge {
+            background: rgba(255,255,255,0.08);
             display: inline-block;
-            background: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-            padding: 10px 30px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .demo-button:hover {
-            background: var(--accent);
-            color: var(--primary);
-        }
-
-        /* AI Chat Widget */
-        .chat-widget {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .chat-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(100, 255, 218, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(100, 255, 218, 0.6);
-        }
-
-        .chat-window {
-            display: none;
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 380px;
-            height: 550px;
-            background: var(--secondary);
-            border: 1px solid var(--accent);
-            border-radius: 15px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-            flex-direction: column;
-        }
-
-        .chat-window.active {
-            display: flex;
-        }
-
-        .chat-header {
-            background: var(--primary);
-            color: var(--text-bright);
-            padding: 20px;
-            border-radius: 15px 15px 0 0;
-            border-bottom: 1px solid var(--accent);
-        }
-
-        .chat-header h3 {
-            margin-bottom: 5px;
-        }
-
-        .chat-header p {
+            padding: 8px 16px;
+            border-radius: 50px;
+            margin-bottom: 25px;
             font-size: 0.85rem;
-            color: var(--text);
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .message {
-            padding: 12px 16px;
-            border-radius: 10px;
-            max-width: 80%;
-            word-wrap: break-word;
-        }
-
-        .message.user {
-            background: var(--accent);
-            color: var(--primary);
-            align-self: flex-end;
-            margin-left: auto;
-        }
-
-        .message.ai {
-            background: rgba(100, 255, 218, 0.1);
-            color: var(--text-bright);
-            border: 1px solid rgba(100, 255, 218, 0.2);
-        }
-
-        .message.typing {
-            background: rgba(100, 255, 218, 0.05);
-            color: var(--text);
-            font-style: italic;
-        }
-
-        .chat-input-area {
-            padding: 15px;
-            border-top: 1px solid rgba(100, 255, 218, 0.1);
-        }
-
-        .chat-input-container {
-            display: flex;
-            gap: 10px;
-        }
-
-        #chatInput {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid rgba(100, 255, 218, 0.3);
-            border-radius: 8px;
-            background: var(--primary);
-            color: var(--text-bright);
-            font-size: 0.95rem;
-        }
-
-        #chatInput:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        #sendButton {
-            padding: 12px 20px;
-            background: var(--accent);
-            color: var(--primary);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            color: var(--accent-gold);
+            border: 1px solid rgba(194, 157, 89, 0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             font-weight: 600;
-            transition: all 0.3s ease;
         }
 
-        #sendButton:hover {
-            transform: scale(1.05);
+        /* --- BUTTONS --- */
+        .btn-custom-primary {
+            background-color: var(--accent-gold);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s;
+        }
+        .btn-custom-primary:hover {
+            background-color: #a38243;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-light-custom {
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .btn-outline-light-custom:hover {
+            background: white;
+            color: var(--primary-navy);
         }
 
-        #sendButton:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        /* --- PRODUCT CARDS --- */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(100, 255, 218, 0.1);
-            margin-top: 60px;
+        /* --- CONTACT SECTION --- */
+        .contact-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
 
-        footer p {
-            color: var(--text);
-            margin-bottom: 10px;
-        }
-
-        .social-links a {
-            color: var(--accent);
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .hero h2 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .chat-window {
-                width: calc(100vw - 40px);
-                height: 500px;
-                right: 20px;
-            }
-
-            .apps-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .contact-info {
-                text-align: center;
-            }
+            .hero-title { font-size: 2.2rem; }
+            .hero-section { padding: 60px 0; }
         }
     </style>
 </head>
 <body>
-    <header>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="icons/orion-core.png" alt="Orion Dev Core Logo">
-                    <div class="logo-text">
-                        <h1>ORION DEV CORE</h1>
-                        <p>AI AMPLIFIES. I CREATE.</p>
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-cpu text-warning me-2"></i>ORION DEV CORE
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item">
+                        <a href="https://wa.me/27724971810" class="btn btn-sm btn-dark px-3 py-2">
+                            <i class="bi bi-whatsapp me-1"></i> Let's Chat
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="experience-badge">
+                        <i class="bi bi-shield-check me-2"></i>Built by Ops Directors
+                    </div>
+                    <h1 class="hero-title">
+                        Automate the Boring Stuff.<br>
+                        Focus on the <span style="color: var(--accent-gold);">Revenue.</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Stop drowning in paperwork. Our AI-powered Legal ERP and Hotel Management suites handle the operations, so you can handle the business.
+                    </p>
+                    <div class="d-flex gap-3 flex-column flex-sm-row">
+                        <a href="#products" class="btn btn-custom-primary">View Solutions</a>
+                        <a href="https://wa.me/27724971810" class="btn btn-outline-light-custom">
+                            <i class="bi bi-whatsapp me-2"></i>Talk to a Human
+                        </a>
                     </div>
                 </div>
-                <div class="contact-info">
-                    <a href="tel:+27724971810">📞 +27 72 497 1810</a>
-                    <a href="mailto:graham@oriondevcore.com">✉️ graham@oriondevcore.com</a>
-                    <a href="https://www.oriondevcore.com" target="_blank">🌐 www.oriondevcore.com</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="container">
-            <h2>⚡ The Future of South African Automation</h2>
-            <p>Built entirely on mobile in collaboration with AI. Proving that world-class innovation can rise from anywhere in South Africa.</p>
-            <button class="cta-button" onclick="openChat()">Talk to Our AI Assistant</button>
-        </div>
-    </section>
-
-    <section class="apps-section">
-        <div class="container">
-            <h2 class="section-title">2026 Product Suite</h2>
-            <div class="apps-grid">
-                <div class="app-card">
-                    <img src="icons/legal.png" alt="Orion Legal" class="app-icon">
-                    <h3>Orion Legal Suite</h3>
-                    <p>Your AI Partner in Practice. Full ERP system with 11-language support, prescription tracking, and document automation.</p>
-                    <div class="price">From R7,555</div>
-                    <a href="demo/legal.html" class="demo-button">Get Started →</a>
-                </div>
-
-                <div class="app-card">
-                    <img src="icons/hotel.png" alt="Orion Hotel" class="app-icon">
-                    <h3>Orion Hotel Suite</h3>
-                    <p>The 24/7 Digital Concierge. Transform guest experience with AI-powered multilingual support and instant service requests.</p>
-                    <div class="price">Custom Pricing</div>
-                    <a href="demo/hotel.html" class="demo-button">Request Quote →</a>
-                </div>
-
-                <div class="app-card">
-                    <img src="icons/mpos.png" alt="Orion mPOS" class="app-icon">
-                    <h3>Orion mPOS</h3>
-                    <p>Fully Automated Business Solution. Turn any smartphone into a powerful checkout terminal with digital signatures.</p>
-                    <div class="price">From R3,848</div>
-                    <a href="demo/mpos.html" class="demo-button">Get Started →</a>
-                </div>
-
-                <div class="app-card">
-                    <img src="icons/surge.png" alt="Orion Surge" class="app-icon">
-                    <h3>Orion Surge</h3>
-                    <p>Token-Based Crash Game. Beat the multiplier before it crashes! Leaderboards, rewards, and ultimate challenge.</p>
-                    <div class="price">FREE + 1000 Tokens</div>
-                    <a href="demo/surge.html" class="demo-button">Play Now →</a>
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="p-5 border border-white border-opacity-10 rounded-3 text-center text-white-50" style="background: rgba(255,255,255,0.03);">
+                        <i class="bi bi-graph-up-arrow display-1 mb-3"></i>
+                        <p>Efficiency Up. Costs Down.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="chat-widget">
-        <button class="chat-button" id="chatToggle" onclick="toggleChat()">💬</button>
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <h3>⚡ Orion AI Assistant</h3>
-                <p>Ask me about our products & pricing</p>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div class="message ai">
-                    Hello! I'm the Orion AI Assistant. I can help you understand our Legal Suite, Hotel Suite, mPOS, and Surge products. What would you like to know?
+    <section class="py-4 bg-white border-bottom">
+        <div class="container">
+            <div class="row text-center text-muted text-uppercase small fw-bold opacity-75">
+                <div class="col-4">
+                    <i class="bi bi-shield-lock me-2"></i>Secure Data
                 </div>
-            </div>
-            <div class="chat-input-area">
-                <div class="chat-input-container">
-                    <input type="text" id="chatInput" placeholder="Ask about products, pricing..." onkeypress="handleKeyPress(event)">
-                    <button id="sendButton" onclick="sendMessage()">Send</button>
+                <div class="col-4">
+                    <i class="bi bi-lightning-charge me-2"></i>AI Powered
+                </div>
+                <div class="col-4">
+                    <i class="bi bi-headset me-2"></i>Local Support
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Orion Dev Core. All rights reserved.</p>
-            <p>Graham Schubach, Founder & Lead Developer</p>
-            <div class="social-links">
-                <a href="https://github.com/Oriondevcore/website" target="_blank">GitHub</a>
-                <a href="mailto:graham@oriondevcore.com">Contact</a>
+    <section id="products" class="py-5" style="background-color: #f8fafc;">
+        <div class="container py-4">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold text-dark mb-3">2026 Product Suite</h2>
+                    <p class="text-muted">Specialized automation tools designed for high-compliance industries.</p>
+                </div>
             </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm p-4 hover-lift">
+                        <div class="card-body">
+                            <div class="mb-4 text-primary">
+                                <i class="bi bi-bank display-5"></i>
+                            </div>
+                            <h4 class="card-title fw-bold mb-3">Orion Legal Suite</h4>
+                            <p class="card-text text-muted mb-4 small">
+                                Full ERP with prescription tracking, automated NDA generation, and 11-language AI translation support.
+                            </p>
+                            <ul class="list-unstyled mb-4 small text-secondary">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>RAF Safety Net</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Secure Doc Vault</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Prescription Alerts</li>
+                            </ul>
+                            <div class="d-grid mt-auto">
+                                <a href="https://wa.me/27724971810?text=I'm%20interested%20in%20the%20Legal%20Suite" class="btn btn-outline-dark btn-sm">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm p-4 hover-lift">
+                        <div class="card-body">
+                            <div class="mb-4 text-warning">
+                                <i class="bi bi-building display-5"></i>
+                            </div>
+                            <h4 class="card-title fw-bold mb-3">Orion Hotel Suite</h4>
+                            <p class="card-text text-muted mb-4 small">
+                                The 24/7 Digital Concierge. Handle guest requests, bookings, and room service in any language automatically.
+                            </p>
+                            <ul class="list-unstyled mb-4 small text-secondary">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>AI Guest Chat</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Instant Translation</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Service Tracking</li>
+                            </ul>
+                            <div class="d-grid mt-auto">
+                                <a href="https://wa.me/27724971810?text=I'm%20interested%20in%20the%20Hotel%20Suite" class="btn btn-outline-dark btn-sm">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm p-4 hover-lift">
+                        <div class="card-body">
+                            <div class="mb-4 text-success">
+                                <i class="bi bi-phone display-5"></i>
+                            </div>
+                            <h4 class="card-title fw-bold mb-3">Orion mPOS</h4>
+                            <p class="card-text text-muted mb-4 small">
+                                Turn your smartphone into a checkout terminal. Digital signatures, auto-invoicing, and zero hardware costs.
+                            </p>
+                            <ul class="list-unstyled mb-4 small text-secondary">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>No Card Machine Needed</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Digital Signatures</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Works on any Android</li>
+                            </ul>
+                            <div class="d-grid mt-auto">
+                                <a href="https://wa.me/27724971810?text=I'm%20interested%20in%20the%20mPOS" class="btn btn-outline-dark btn-sm">Enquire Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5 bg-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-box text-center">
+                        <h3 class="mb-4">Ready to Modernize Your Operations?</h3>
+                        <p class="text-muted mb-4">
+                            We don't use sales scripts. Talk directly to the developer and operations director.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="https://wa.me/27724971810" class="btn btn-success px-4 py-2">
+                                <i class="bi bi-whatsapp me-2"></i>WhatsApp Us
+                            </a>
+                            <a href="mailto:graham@oriondevcore.com" class="btn btn-outline-secondary px-4 py-2">
+                                <i class="bi bi-envelope me-2"></i>Send Email
+                            </a>
+                        </div>
+                        <p class="mt-4 small text-muted">
+                            <i class="bi bi-geo-alt me-1"></i> Based in South Africa, Serving Globally.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 bg-dark text-white-50 text-center small">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 Orion Dev Core. All rights reserved.</p>
         </div>
     </footer>
 
-    <script>
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker registered', reg))
-                    .catch(err => console.log('Service Worker registration failed', err));
-            });
-        }
-
-        // Chat functionality
-        const chatWindow = document.getElementById('chatWindow');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
-
-        // Google Apps Script Web App URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDyWUFW0CATeOAvfkbf1gTRCXpVpGES9rLh-esG-zbjG7Cppv_wwhQmC-EgJ5EmC8_/exec';
-
-        function toggleChat() {
-            chatWindow.classList.toggle('active');
-            if (chatWindow.classList.contains('active')) {
-                chatInput.focus();
-            }
-        }
-
-        function openChat() {
-            chatWindow.classList.add('active');
-            chatInput.focus();
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        async function sendMessage() {
-            const message = chatInput.value.trim();
-            if (!message) return;
-
-            // Add user message
-            addMessage(message, 'user');
-            chatInput.value = '';
-            sendButton.disabled = true;
-
-            // Show typing indicator
-            const typingMsg = addMessage('Thinking...', 'typing');
-
-            try {
-                // IMPORTANT: Use text/plain to avoid CORS preflight errors with Google Apps Script
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({
-                        action: 'chat',
-                        message: message
-                    })
-                });
-
-                const data = await response.json();
-                
-                // Remove typing indicator
-                typingMsg.remove();
-
-                // Add AI response
-                if (data.success) {
-                    addMessage(data.response, 'ai');
-                } else {
-                    addMessage('Sorry, I encountered an error.', 'ai');
-                }
-            } catch (error) {
-                console.error(error);
-                typingMsg.remove();
-                addMessage('Connection error. Please check your internet or try again later.', 'ai');
-            }
-
-            sendButton.disabled = false;
-        }
-
-        function addMessage(text, type) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${type}`;
-            msgDiv.textContent = text;
-            chatMessages.appendChild(msgDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            return msgDiv;
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
- 
