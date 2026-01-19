@@ -14,7 +14,9 @@
         /* --- CORPORATE THEME CONFIGURATION --- */
         :root {
             --primary-navy: #0f172a;  /* Deep, trustworthy blue */
+            --primary-dark: #020617;
             --accent-gold: #c29d59;   /* Premium/Value */
+            --accent-hover: #d4b06a;
             --text-grey: #94a3b8;     /* Readable grey */
             --bg-light: #f8fafc;      /* Soft white */
         }
@@ -33,63 +35,106 @@
 
         /* --- NAVIGATION --- */
         .navbar {
-            background-color: white;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-            padding: 15px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            padding: 12px 0;
         }
         .navbar-brand {
             font-weight: 700;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: var(--primary-navy);
-            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo-img {
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-gold);
         }
 
         /* --- HERO SECTION --- */
         .hero-section {
             background-color: var(--primary-navy);
+            /* Subtle tech grid pattern */
+            background-image: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98)), 
+                              url('https://www.transparenttextures.com/patterns/circuit-board.png');
             color: white;
-            padding: 60px 0 80px 0;
+            padding: 80px 0 100px 0;
             position: relative;
+            overflow: hidden;
+        }
+        
+        /* Gold glow effect behind the phone */
+        .hero-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(194, 157, 89, 0.15) 0%, rgba(0,0,0,0) 70%);
+            right: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 0;
+            pointer-events: none;
         }
         
         .hero-title {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
         }
         
         .hero-subtitle {
-            font-size: 1.1rem;
-            color: #94a3b8;
+            font-size: 1.15rem;
+            color: #cbd5e1;
             font-weight: 300;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            line-height: 1.6;
         }
 
         .experience-badge {
-            background: rgba(255,255,255,0.08);
-            display: inline-block;
-            padding: 6px 14px;
+            background: rgba(255,255,255,0.05);
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
             border-radius: 50px;
-            margin-bottom: 20px;
-            font-size: 0.8rem;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
             color: var(--accent-gold);
             border: 1px solid rgba(194, 157, 89, 0.3);
             text-transform: uppercase;
+            letter-spacing: 1px;
             font-weight: 600;
         }
 
-        /* --- VIRTUAL PHONE DEMO --- */
+        /* --- VIRTUAL PHONE DEMO (REVISED) --- */
+        .device-wrapper {
+            position: relative;
+            z-index: 2;
+            perspective: 1000px;
+        }
+
         .device-mockup {
             border: 12px solid #2d2d2d;
-            border-radius: 30px;
+            border-radius: 40px;
             overflow: hidden;
-            height: 500px;
+            width: 300px; /* Fixed width for consistency */
+            aspect-ratio: 9 / 19; /* Modern phone ratio */
             background: #000;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
             margin: 0 auto;
             position: relative;
-            max-width: 320px;
+            transform: rotateY(-5deg) rotateX(5deg); /* Subtle 3D tilt */
+            transition: transform 0.5s ease;
         }
+        
+        .device-mockup:hover {
+            transform: rotateY(0) rotateX(0);
+        }
+
         /* The Notch */
         .device-mockup::before {
             content: '';
@@ -97,45 +142,80 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 40%;
-            height: 20px;
+            width: 35%;
+            height: 24px;
             background: #2d2d2d;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-            z-index: 10;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 20;
+        }
+
+        /* Screen Container */
+        .device-screen {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            /* Safe area padding so notch doesn't cover content */
+            padding-top: 30px; 
+            position: relative;
+        }
+
+        /* Loading Spinner behind iframe */
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            color: var(--primary-navy);
         }
 
         /* --- BUTTONS --- */
         .btn-custom-primary {
             background-color: var(--accent-gold);
             color: white;
-            padding: 12px 30px;
-            border-radius: 4px;
+            padding: 14px 32px;
+            border-radius: 6px;
             font-weight: 600;
             border: none;
             transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(194, 157, 89, 0.3);
         }
         .btn-custom-primary:hover {
-            background-color: #a38243;
+            background-color: var(--accent-hover);
             color: white;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(194, 157, 89, 0.4);
         }
         
         /* --- PRODUCT CARDS --- */
         .card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+            background: white;
+            overflow: hidden;
         }
         .hover-lift:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
+        }
+        
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            object-fit: cover;
         }
 
         /* Mobile Adjustments */
         @media (max-width: 991px) {
-            .hero-section { text-align: center; }
-            .device-mockup { margin-top: 40px; }
-            .hero-title { font-size: 2rem; }
+            .hero-section { text-align: center; padding-top: 40px; }
+            .hero-title { font-size: 2.2rem; }
+            .device-wrapper { margin-top: 50px; transform: none; }
+            .device-mockup { transform: none; }
+            .d-flex.gap-3 { justify-content: center !important; }
         }
     </style>
 </head>
@@ -144,17 +224,18 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="bi bi-cpu text-warning me-2"></i>ORION DEV CORE
+                <img src="odc.jpeg" alt="ODC Logo" class="nav-logo-img shadow-sm">
+                ORION DEV CORE
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav gap-3">
-                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <ul class="navbar-nav gap-3 align-items-center">
+                    <li class="nav-item"><a class="nav-link fw-medium" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="#contact">Contact</a></li>
                     <li class="nav-item">
-                        <a href="https://wa.me/27724971810" class="btn btn-sm btn-dark px-3 py-2">
+                        <a href="https://wa.me/27724971810" class="btn btn-sm btn-dark px-4 py-2 rounded-pill">
                             <i class="bi bi-whatsapp me-1"></i> Chat
                         </a>
                     </li>
@@ -164,9 +245,10 @@
     </nav>
 
     <section class="hero-section">
+        <div class="hero-glow"></div>
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 position-relative z-1">
                     <div class="experience-badge">
                         <i class="bi bi-shield-check me-2"></i>Ops Directors since 1998
                     </div>
@@ -175,26 +257,36 @@
                         Focus on the <span style="color: var(--accent-gold);">Revenue.</span>
                     </h1>
                     <p class="hero-subtitle">
-                        Stop answering "What's the WiFi password?" 50 times a day. See our AI Concierge in action right now &#8594;
+                        Stop answering "What's the WiFi password?" 50 times a day.<br>
+                        Deploy enterprise-grade AI for your Hospitality or Legal firm.
                     </p>
                     <div class="d-flex gap-3 flex-column flex-sm-row justify-content-lg-start justify-content-center">
-                        <a href="#products" class="btn btn-custom-primary">View All Products</a>
-                        <a href="https://wa.me/27724971810" class="btn btn-outline-light">
+                        <a href="#products" class="btn btn-custom-primary">View Product Suite</a>
+                        <a href="https://wa.me/27724971810" class="btn btn-outline-light px-4 py-3 fw-semibold">
                             <i class="bi bi-whatsapp me-2"></i>Talk to Graham
                         </a>
                     </div>
                 </div>
                 
                 <div class="col-lg-6">
-                    <div class="device-mockup">
-                        <iframe src="https://script.google.com/macros/s/AKfycbys8jhnh8y9R_hsVK8E5su2d7PFhZUqUsJizatM2IZ5tpmP7pr-tYxhI6GDS7LHTUC3/exec" 
-                                style="width: 100%; height: 100%; border: none;" 
-                                title="ZAR Hotel Demo">
-                        </iframe>
+                    <div class="device-wrapper">
+                        <div class="device-mockup">
+                            <div class="device-screen">
+                                <div class="loading-spinner">
+                                    <div class="spinner-border text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <iframe src="https://script.google.com/macros/s/AKfycbys8jhnh8y9R_hsVK8E5su2d7PFhZUqUsJizatM2IZ5tpmP7pr-tYxhI6GDS7LHTUC3/exec" 
+                                        style="width: 100%; height: 100%; border: none; position: relative; z-index: 2; background: transparent;" 
+                                        title="ZAR Hotel Demo">
+                                </iframe>
+                            </div>
+                        </div>
+                        <p class="text-center mt-4 text-white-50 small">
+                            <i class="bi bi-circle-fill text-success me-2"></i>Live Interactive Demo
+                        </p>
                     </div>
-                    <p class="text-center mt-3 text-white-50 small">
-                        <i class="bi bi-circle-fill text-success me-2 blink"></i>Live Demo: Try chatting with it
-                    </p>
                 </div>
             </div>
         </div>
@@ -214,23 +306,25 @@
         <div class="container py-4">
             <div class="row text-center mb-5">
                 <div class="col-lg-8 mx-auto">
-                    <h2 class="fw-bold text-dark mb-3">2026 Product Suite</h2>
-                    <p class="text-muted">Specialized automation tools for SA Businesses.</p>
+                    <h2 class="fw-bold text-dark mb-3">The Orion Product Suite</h2>
+                    <p class="text-muted">Specialized automation tools built for South African Business Logic.</p>
                 </div>
             </div>
 
-            <div class="row g-4">
-                <div class="col-lg-4">
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6">
                     <div class="card h-100 border-0 shadow-sm p-4 hover-lift">
-                        <div class="card-body">
-                            <div class="mb-4 text-warning"><i class="bi bi-building display-5"></i></div>
+                        <div class="card-body text-center text-lg-start">
+                            <img src="hotel.jpeg" alt="Orion Hotel Suite" class="app-icon">
+                            
                             <h4 class="card-title fw-bold mb-3">Orion Hotel Suite</h4>
                             <p class="card-text text-muted mb-4 small">
-                                The 24/7 Digital Concierge. Handle guest requests, bookings, and room service automatically.
+                                The 24/7 Digital Concierge. Handle guest requests, bookings, and room service automatically without human intervention.
                             </p>
-                            <ul class="list-unstyled mb-4 small text-secondary">
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Guest Chat (Try Demo Above)</li>
+                            <ul class="list-unstyled mb-4 small text-secondary text-start">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>WhatsApp Integration</li>
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Instant Translation</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Booking Management</li>
                             </ul>
                             <div class="d-grid mt-auto">
                                 <a href="https://wa.me/27724971810?text=I'm%20interested%20in%20the%20Hotel%20Suite" class="btn btn-outline-dark btn-sm">Enquire Now</a>
@@ -239,17 +333,19 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6">
                     <div class="card h-100 border-0 shadow-sm p-4 hover-lift">
-                        <div class="card-body">
-                            <div class="mb-4 text-success"><i class="bi bi-phone display-5"></i></div>
+                        <div class="card-body text-center text-lg-start">
+                             <img src="mpos.jpeg" alt="Orion mPOS" class="app-icon">
+
                             <h4 class="card-title fw-bold mb-3">Orion mPOS</h4>
                             <p class="card-text text-muted mb-4 small">
                                 Turn your smartphone into a checkout terminal. Digital signatures, auto-invoicing, and zero hardware costs.
                             </p>
-                            <ul class="list-unstyled mb-4 small text-secondary">
+                            <ul class="list-unstyled mb-4 small text-secondary text-start">
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>No Card Machine Needed</li>
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Digital Signatures</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Cloud Sync</li>
                             </ul>
                             <div class="d-grid mt-auto">
                                 <a href="https://geemcneel-png.github.io/ODC_ABS/" target="_blank" class="btn btn-outline-dark btn-sm">View Live Demo</a>
@@ -258,17 +354,19 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-4 col-md-6">
                     <div class="card h-100 border-0 shadow-sm p-4 hover-lift">
-                        <div class="card-body">
-                            <div class="mb-4 text-primary"><i class="bi bi-bank display-5"></i></div>
+                        <div class="card-body text-center text-lg-start">
+                             <img src="legal.jpeg" alt="Orion Legal Suite" class="app-icon">
+
                             <h4 class="card-title fw-bold mb-3">Orion Legal Suite</h4>
                             <p class="card-text text-muted mb-4 small">
-                                Full ERP with prescription tracking, automated NDA generation, and RAF Safety Net.
+                                Full ERP with prescription tracking, automated NDA generation, and RAF Safety Net for attorneys.
                             </p>
-                            <ul class="list-unstyled mb-4 small text-secondary">
+                            <ul class="list-unstyled mb-4 small text-secondary text-start">
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>RAF Prescription Alerts</li>
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Secure Doc Vault</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Client Portal</li>
                             </ul>
                             <div class="d-grid mt-auto">
                                 <a href="https://wa.me/27724971810?text=I'm%20interested%20in%20the%20Legal%20Suite" class="btn btn-outline-dark btn-sm">Enquire Now</a>
@@ -284,10 +382,10 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="contact-box text-center p-4 border rounded">
-                        <h3 class="mb-4">Ready to Modernize?</h3>
-                        <p class="text-muted mb-4">Talk directly to the developer and operations director.</p>
-                        <div class="d-flex justify-content-center gap-3">
+                    <div class="contact-box text-center p-5 border rounded-4 bg-light">
+                        <h3 class="mb-3">Ready to Modernize?</h3>
+                        <p class="text-muted mb-4">Talk directly to the developer and operations director. No sales teams, just solutions.</p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
                             <a href="https://wa.me/27724971810" class="btn btn-success px-4 py-2">
                                 <i class="bi bi-whatsapp me-2"></i>WhatsApp Me
                             </a>
@@ -303,7 +401,7 @@
 
     <footer class="py-4 bg-dark text-white-50 text-center small">
         <div class="container">
-            <p class="mb-0">&copy; 2026 Orion Dev Core. Made in SA.</p>
+            <p class="mb-0">&copy; 2026 Orion Dev Core. Made in South Africa.</p>
         </div>
     </footer>
 
