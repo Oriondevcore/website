@@ -1,0 +1,18 @@
+Development Log: Orion Price Builder
+​Version 1.0 - Initial Build (Jan 2026)
+​Concept: Created basic HTML/React calculator.
+​Logic: Implemented tier-based pricing for 3-5 star hotels.
+​UI: Established "Glassmorphism" look using Tailwind CSS.
+​Version 1.5 - PWA Upgrade
+​Added manifest.json and Service Worker (sw.js).
+​Enabled offline caching for assets.
+​Fixed mobile viewport scaling issues on Honor devices.
+​Version 2.0 - The "Cyberpunk" Update
+​Feature: Added mPOS Modal with signature pad.
+​Backend: Connected to Google Apps Script for automated PDF contract generation.
+​Integration: Added Yoco Payment Gateway logic.
+​Styling: Switched to "Quicksand" font for premium aesthetic.
+​Current Status
+​Live: Yes
+​Stable: Yes
+​Next Steps: Implement WhatsApp API for pre-sales chat integration.
