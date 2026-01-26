@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORION DEV CORE | Hospitality AI Ecosystem</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts: Quicksand -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --neon-blue: #3b82f6;
+            --neon-purple: #a855f7;
+            --bg-dark: #0f172a;
+        }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: white; 
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Cyberpunk POS Card Special Styling */
+        .pos-card:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.2);
+        }
+        .pos-card:hover::before {
+            background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
+        }
+
+        /* Hero Background Animation */
+        .hero-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 25%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Background -->
+    <div class="hero-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="w-full p-6 flex justify-between items-center z-50">
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-bold tracking-tighter">
+                ORION <span class="text-blue-500">DEV CORE</span>
+            </h1>
+            <span class="text-[10px] text-gray-400 tracking-widest uppercase">Automated Business Solutions</span>
+        </div>
+        <a href="#contact" class="px-4 py-2 text-sm font-semibold text-gray-300 hover:text-white border border-gray-700 hover:border-blue-500 rounded-lg transition-all">
+            Contact
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 py-12 text-center z-10">
+        
+        <div class="max-w-3xl mb-16 animate-fade-in-up">
+            <h2 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                AI Amplification.
+                <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Super Powerful Creations.</span>
+            </h2>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+                For all generations. Welcome to the Orion Hospitality Ecosystem. 
+                Select a module to launch.
+            </p>
+        </div>
+
+        <!-- Ecosystem Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4">
+            
+            <!-- 1. Price Builder (Active Sales Tool) -->
+            <a href="/pricing/" class="glass-card p-8 rounded-2xl flex flex-col items-start group text-left h-full">
+                <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-calculator fa-xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 text-white">Orion Hotel Suite</h3>
+                <p class="text-sm text-gray-400 mb-6 flex-grow">
+                    ROI Calculator & Proposal Generator. Build custom packages for 3-5 Star properties.
+                </p>
+                <div class="flex items-center text-blue-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                    Launch Builder <i class="fa-solid fa-arrow-right ml-2"></i>
+                </div>
+            </a>
+
+            <!-- 2. Manager Dashboard (Ops) -->
+            <a href="/dashboard/" class="glass-card p-8 rounded-2xl flex flex-col items-start group text-left h-full">
+                <div class="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-6 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-tower-control fa-xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 text-white">Manager OS</h3>
+                <p class="text-sm text-gray-400 mb-6 flex-grow">
+                    Mission Control. Real-time ticket routing, housekeeping tracking, and analytics.
+                </p>
+                <div class="flex items-center text-emerald-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                    Access Dashboard <i class="fa-solid fa-lock ml-2 text-[10px]"></i>
+                </div>
+            </a>
+
+            <!-- 3. Cyberpunk mPOS (The Skeleton) -->
+            <a href="/mpos/" class="glass-card pos-card p-8 rounded-2xl flex flex-col items-start group text-left h-full relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 opacity-10 text-purple-600 rotate-12">
+                    <i class="fa-solid fa-microchip fa-8x"></i>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-6 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors z-10">
+                    <i class="fa-solid fa-fingerprint fa-xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 text-white z-10">Orion Auto-Business</h3>
+                <p class="text-sm text-gray-400 mb-6 flex-grow z-10">
+                    <span class="text-purple-400 font-bold">CONCEPT:</span> The Automated Skeleton. More than POS. It's the central nervous system.
+                </p>
+                <div class="flex items-center text-purple-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform z-10">
+                    Initialize System <i class="fa-solid fa-terminal ml-2"></i>
+                </div>
+            </a>
+            
+             <!-- 4. Legal Suite -->
+            <a href="/legal/" class="glass-card p-8 rounded-2xl flex flex-col items-start group text-left h-full">
+                <div class="w-12 h-12 rounded-lg bg-slate-500/10 flex items-center justify-center mb-6 text-slate-400 group-hover:bg-slate-500 group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-scale-balanced fa-xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 text-white">Orion Legal Suite</h3>
+                <p class="text-sm text-gray-400 mb-6 flex-grow">
+                   SLA, POPIA Compliance, and Contract Management hub.
+                </p>
+                <div class="flex items-center text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                    View Docs <i class="fa-solid fa-file-contract ml-2"></i>
+                </div>
+            </a>
+
+             <!-- 5. Guest AI Demo (Iframe integration) -->
+             <div class="glass-card p-0 rounded-2xl md:col-span-2 overflow-hidden h-64 md:h-auto relative group">
+                <div class="absolute inset-0 bg-black/50 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <span class="text-white font-bold text-lg mb-2">Live Guest Experience</span>
+                    <span class="text-xs text-gray-300 uppercase tracking-widest">Click to Interact</span>
+                </div>
+                <!-- REPLACE THE SRC BELOW WITH YOUR ACTUAL CHAT URL IF DIFFERENT -->
+                <iframe src="https://your-basic-chat-url.com" class="w-full h-full border-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500"></iframe>
+                <div class="absolute bottom-4 left-4 z-20 pointer-events-none">
+                    <div class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                        LIVE DEMO
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-8 text-center border-t border-gray-800 bg-black/20">
+        <p class="text-gray-500 text-xs mb-2">
+            &copy; 2026 Orion Dev Core. All Rights Reserved.
+        </p>
+        <p class="text-gray-600 text-[10px]">
+            Made with <i class="fa-solid fa-heart text-red-900"></i> & AI in South Africa.
+        </p>
+    </footer>
+
+    <!-- WhatsApp Floating Action Button -->
+    <a href="https://wa.me/27724971810?text=Hi%20Graham,%20I'm%20interested%20in%20the%20Orion%20Hotel%20Suite." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp fa-2x"></i>
+    </a>
+
+</body>
+</html>
+
+
