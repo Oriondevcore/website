@@ -1,1 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Orion Hospitality Suite | Professional Quote Builder</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+    <!-- React & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts: Quicksand -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --bg-primary: #f3f4f6;
+            --text-primary: #1f2937;
+            --card-bg: #ffffff;
+            --card-border: #e5e7eb;
+            --accent-color: #1e3a8a;
+            --accent-light: #eff6ff;
+        }
+
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --text-primary: #f8fafc;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --accent-color: #60a5fa;
+            --accent-light: #1e293b;
+        }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: var(--bg-primary); 
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Cyberpunk/mPOS Modal Styles */
+        .cyberpunk-modal {
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .cyberpunk-input {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #fff;
+        }
+        .cyberpunk-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+
+        /* Signature Pad Area */
+        .signature-pad {
+            background-color: #fff;
+            border: 2px dashed #cbd5e1;
+            cursor: crosshair;
+            touch-action: none; /* Prevents scrolling while signing */
+        }
+        .dark-mode .signature-pad {
+            background-color: #1e293b;
+            border-color: #475569;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // UPDATED BACKEND URL
+        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxOkwOxGs154fy86-TRsvVaqUe9Aa8F6mzdH-CgZPhlyxBIsD7e6s6baal8oteW-qopjQ/exec"; 
+
+        const App = () => {
+            const [darkMode, setDarkMode] = useState(false);
+            const [rooms, setRooms] = useState(18);
+            const [starRating, setStarRating] = useState(3); 
+            const [outlets, setOutlets] = useState(0); 
+            const [showCheckout, setShowCheckout] = useState(false);
+            const [loading, setLoading] = useState(false);
+            const [hotelName, setHotelName] = useState("");
+            
+            // Signature State
+            const canvasRef = useRef(null);
+            const [isDrawing, setIsDrawing] = useState(false);
+            const [hasSignature, setHasSignature] = useState(false);
+            
+            const [features, setFeatures] = useState({
+                base: true,
+                multilang: false,
+                dashboard: false,
+                managerTools: false,
+                whatsapp: false
+            });
+
+            const [costs, setCosts] = useState({ monthly: 0, setup: 0 });
+
+            // Pricing Constants
+            const PRICES = {
+                base: { setup: 4999, monthly: 999 },
+                multilang: { setup: 2500, monthly: 500 },
+                dashboard: { setup: 3500, monthly: 750 },
+                managerTools: { setup: 5000, monthly: 1250 },
+                whatsapp: { setup: 3500, monthly: 450 },
+                outletCost: 3500 
+            };
+
+            const calculateCosts = () => {
+                let monthly = PRICES.base.monthly;
+                let setup = PRICES.base.setup;
+
+                if (features.multilang) { monthly += PRICES.multilang.monthly; setup += PRICES.multilang.setup; }
+                if (features.dashboard) { monthly += PRICES.dashboard.monthly; setup += PRICES.dashboard.setup; }
+                if (features.managerTools) { monthly += PRICES.managerTools.monthly; setup += PRICES.managerTools.setup; }
+                if (features.whatsapp) { monthly += PRICES.whatsapp.monthly; setup += PRICES.whatsapp.setup; }
+
+                monthly += (outlets * PRICES.outletCost);
+
+                let roomCost = 0;
+                if (rooms > 18) {
+                    const extraRooms = rooms - 18;
+                    let ratePerRoom = 45; 
+                    if (rooms > 100) ratePerRoom = 35;
+                    if (rooms > 200) ratePerRoom = 25;
+                    roomCost = extraRooms * ratePerRoom;
+                }
+
+                let multiplier = 1;
+                if (starRating === 4) multiplier = 1.25;
+                if (starRating === 5) multiplier = 1.5;
+
+                if (rooms >= 150) {
+                     if (starRating === 3 && monthly < 18000) monthly = 18000;
+                     if (starRating === 5 && monthly < 25000) monthly = 25000;
+                } else {
+                     monthly += roomCost;
+                     monthly = monthly * multiplier;
+                }
+
+                setCosts({ monthly: Math.round(monthly), setup });
+            };
+
+            useEffect(() => {
+                calculateCosts();
+                if (darkMode) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }, [rooms, features, starRating, outlets, darkMode]);
+
+            const toggleFeature = (key) => {
+                setFeatures(prev => ({ ...prev, [key]: !prev[key] }));
+            };
+
+            const formatCurrency = (val) => {
+                return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }).format(val);
+            };
+
+            // --- SIGNATURE PAD LOGIC ---
+            useEffect(() => {
+                if (showCheckout && canvasRef.current) {
+                    const canvas = canvasRef.current;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set canvas resolution for sharpness
+                    const rect = canvas.getBoundingClientRect();
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                    
+                    ctx.strokeStyle = darkMode ? "#ffffff" : "#000000";
+                    ctx.lineWidth = 2;
+                    ctx.lineCap = 'round';
+                }
+            }, [showCheckout, darkMode]);
+
+            const startDrawing = (e) => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                setIsDrawing(true);
+            };
+
+            const draw = (e) => {
+                if (!isDrawing) return;
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                setHasSignature(true);
+            };
+
+            const stopDrawing = () => {
+                setIsDrawing(false);
+            };
+            
+            const clearSignature = () => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                setHasSignature(false);
+            }
+
+            // --- SUBMIT TO BACKEND ---
+            const handlePayment = async () => {
+                if (!hasSignature) {
+                    alert("Please sign before proceeding.");
+                    return;
+                }
+                
+                setLoading(true);
+                const customerName = document.getElementById('custName').value;
+                const email = document.getElementById('custEmail').value;
+                const phone = document.getElementById('custPhone').value;
+                
+                // Get Signature Image
+                const sigImage = canvasRef.current.toDataURL();
+
+                const payload = {
+                    hotelName,
+                    customerName,
+                    email,
+                    phone,
+                    starRating,
+                    rooms,
+                    outlets,
+                    features: Object.keys(features).filter(k => features[k]),
+                    costs,
+                    signatures: { client: sigImage } // Send signature object
+                };
+
+                try {
+                    const response = await fetch(BACKEND_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        // Redirect to Yoco
+                        window.location.href = result.redirectUrl;
+                    } else {
+                        alert("Error: " + result.message);
+                    }
+                } catch (error) {
+                    alert("Network Error: " + error.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <div className={`min-h-screen p-4 md:p-8 max-w-6xl mx-auto transition-colors duration-300`}>
+                    
+                    {/* Top Bar with Toggle */}
+                    <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+                         <div>
+                             <h1 className="text-3xl font-bold tracking-tight">ORION <span className="text-blue-600 dark:text-blue-400">HOTEL SUITE</span></h1>
+                             <p className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">Enterprise Resource Planning & Guest Experience AI</p>
+                         </div>
+                         <button 
+                            onClick={() => setDarkMode(!darkMode)}
+                            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                         >
+                            {darkMode ? <i className="fa-solid fa-sun text-yellow-400"></i> : <i className="fa-solid fa-moon text-gray-600"></i>}
+                         </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        {/* LEFT COLUMN: Configuration */}
+                        <div className="lg:col-span-8 space-y-6">
+                            
+                            {/* Property Profile */}
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                                <h2 className="text-lg font-bold mb-6 border-l-4 border-blue-600 pl-3">Property Profile</h2>
+                                
+                                <div className="mb-4">
+                                    <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Hotel Name</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Enter Property Name"
+                                        className="w-full p-2 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                                        value={hotelName}
+                                        onChange={(e) => setHotelName(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    {/* Star Rating */}
+                                    <div>
+                                        <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Star Rating</label>
+                                        <div className="flex space-x-2">
+                                            {[3, 4, 5].map(star => (
+                                                <button
+                                                    key={star}
+                                                    onClick={() => setStarRating(star)}
+                                                    className={`px-4 py-2 rounded-md font-bold text-sm transition-all ${
+                                                        starRating === star 
+                                                        ? 'bg-blue-600 text-white shadow-lg' 
+                                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200'
+                                                    }`}
+                                                >
+                                                    {star} Star
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Outlets */}
+                                    <div>
+                                        <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Revenue Centers</label>
+                                        <div className="flex items-center">
+                                            <button onClick={() => setOutlets(Math.max(0, outlets - 1))} className="w-8 h-8 rounded bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">-</button>
+                                            <span className="mx-4 font-bold text-lg w-4 text-center">{outlets}</span>
+                                            <button onClick={() => setOutlets(outlets + 1)} className="w-8 h-8 rounded bg-blue-600 text-white font-bold hover:bg-blue-700">+</button>
+                                        </div>
+                                        <p className="text-[10px] text-gray-400 mt-1">Restaurants/Bars/Spas (+{formatCurrency(PRICES.outletCost)})</p>
+                                    </div>
+                                </div>
+
+                                {/* Room Slider */}
+                                <div className="mb-2">
+                                    <div className="flex justify-between items-end mb-2">
+                                        <label className="text-xs uppercase tracking-wider font-semibold">Room Capacity</label>
+                                        <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{rooms} <span className="text-sm font-normal text-gray-500">Keys</span></span>
+                                    </div>
+                                    <input 
+                                        type="range" 
+                                        min="1" 
+                                        max="300" 
+                                        value={rooms} 
+                                        onChange={(e) => setRooms(parseInt(e.target.value))}
+                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Features Builder */}
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                                <h2 className="text-lg font-bold mb-6 border-l-4 border-blue-600 pl-3">System Modules</h2>
+
+                                {/* Base Layer */}
+                                <div className="flex items-center justify-between p-4 mb-4 border border-gray-200 dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-700/50">
+                                    <div className="flex items-start">
+                                        <div className="mt-1 mr-4 text-gray-500 dark:text-gray-400">
+                                            <i className="fa-solid fa-server fa-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-sm uppercase">Core AI Engine</h3>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-md">24/7 Digital Concierge, Policies Hub, Weather, English NLP.</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="font-bold">{formatCurrency(999)}<span className="text-[10px] font-normal opacity-75">/mo</span></div>
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase">Included</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <FeatureToggle active={features.multilang} onClick={() => toggleFeature('multilang')} icon="fa-globe" title="Multi-Language Module" desc="18 Languages (11 Official SA + 7 Intl)." price={PRICES.multilang.monthly} setup={PRICES.multilang.setup} />
+                                    <FeatureToggle active={features.dashboard} onClick={() => toggleFeature('dashboard')} icon="fa-chart-network" title="Manager Dashboard & Routing" desc="Real-time Analytics. Smart routing." price={PRICES.dashboard.monthly} setup={PRICES.dashboard.setup} highlight={true} />
+                                    <FeatureToggle active={features.managerTools} onClick={() => toggleFeature('managerTools')} icon="fa-briefcase" title="AI Management Tools" desc="Complaint Drafting, Itinerary Planner." price={PRICES.managerTools.monthly} setup={PRICES.managerTools.setup} />
+                                    <FeatureToggle active={features.whatsapp} onClick={() => toggleFeature('whatsapp')} icon="fa-brands fa-whatsapp" title="WhatsApp Integration API" desc="Direct guest messaging pre-arrival." price={PRICES.whatsapp.monthly} setup={PRICES.whatsapp.setup} muted={true} />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* RIGHT COLUMN: The Receipt */}
+                        <div className="lg:col-span-4">
+                            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 sticky top-8">
+                                <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
+                                    <h2 className="text-lg font-bold">Cost Projection</h2>
+                                    <i className="fa-solid fa-file-invoice-dollar text-gray-400"></i>
+                                </div>
+                                
+                                {/* One-Time Costs */}
+                                <div className="mb-6">
+                                    <h3 className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-3">Implementation (One-Time)</h3>
+                                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                        <ItemRow label="Core System Setup" price={PRICES.base.setup} />
+                                        {features.multilang && <ItemRow label="Language Config" price={PRICES.multilang.setup} />}
+                                        {features.dashboard && <ItemRow label="Dashboard Deployment" price={PRICES.dashboard.setup} />}
+                                        {features.managerTools && <ItemRow label="AI Tools Training" price={PRICES.managerTools.setup} />}
+                                        {features.whatsapp && <ItemRow label="WhatsApp API Setup" price={PRICES.whatsapp.setup} />}
+                                        <div className="flex justify-between pt-2 mt-2 border-t border-gray-100 dark:border-gray-700 font-bold">
+                                            <span>Total Implementation</span>
+                                            <span>{formatCurrency(costs.setup)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Monthly Costs */}
+                                <div className="mb-6 bg-gray-50 dark:bg-gray-700/30 p-4 rounded border border-gray-100 dark:border-gray-700">
+                                    <h3 className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-3">Monthly Subscription</h3>
+                                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                        <ItemRow label="Base Platform" price={PRICES.base.monthly} />
+                                        {outlets > 0 && <ItemRow label={`Outlets (${outlets})`} price={outlets * PRICES.outletCost} />}
+                                        {features.multilang && <ItemRow label="Multi-Language" price={PRICES.multilang.monthly} />}
+                                        {features.dashboard && <ItemRow label="Dashboard" price={PRICES.dashboard.monthly} />}
+                                        {features.managerTools && <ItemRow label="Mgmt Tools" price={PRICES.managerTools.monthly} />}
+                                        {features.whatsapp && <ItemRow label="WhatsApp" price={PRICES.whatsapp.monthly} />}
+                                        
+                                        <div className="flex justify-between items-center pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
+                                            <span className="font-bold">Total Monthly</span>
+                                            <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{formatCurrency(costs.monthly)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button 
+                                    className="w-full bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-500 text-white font-semibold py-3 rounded-md transition-all shadow-md text-sm uppercase tracking-wide"
+                                    onClick={() => {
+                                        if(!hotelName) { alert('Please enter the Hotel Name first.'); return;}
+                                        setShowCheckout(true);
+                                    }}
+                                >
+                                    Generate Proposal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Checkout Modal (Cyberpunk mPOS) */}
+                    {showCheckout && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm p-4 overflow-y-auto">
+                            <div className="cyberpunk-modal w-full max-w-md p-6 rounded-xl text-white relative my-auto">
+                                <button 
+                                    onClick={() => setShowCheckout(false)} 
+                                    className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                                >
+                                    <i className="fa-solid fa-times fa-lg"></i>
+                                </button>
+
+                                {/* Header */}
+                                <div className="text-center mb-6">
+                                    <h2 className="text-2xl font-bold text-blue-400 tracking-wider">ORION mPOS</h2>
+                                    <div className="text-xs text-blue-200 mt-1">SECURE TRANSACTION TERMINAL</div>
+                                </div>
+
+                                {/* Amount */}
+                                <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 mb-6 text-center">
+                                    <div className="text-gray-400 text-xs uppercase mb-1">Total Amount Due</div>
+                                    <div className="text-3xl font-mono text-green-400">{formatCurrency(costs.setup + costs.monthly)}</div>
+                                </div>
+
+                                {/* Form */}
+                                <div className="space-y-4 mb-6">
+                                    <div>
+                                        <label className="text-xs text-blue-300 uppercase font-bold ml-1">Customer Name</label>
+                                        <input id="custName" type="text" className="cyberpunk-input w-full p-2 rounded text-sm mt-1" placeholder="Enter Full Name" />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs text-blue-300 uppercase font-bold ml-1">Email Address</label>
+                                        <input id="custEmail" type="email" className="cyberpunk-input w-full p-2 rounded text-sm mt-1" placeholder="manager@hotel.com" />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs text-blue-300 uppercase font-bold ml-1">Phone Number</label>
+                                        <input id="custPhone" type="tel" className="cyberpunk-input w-full p-2 rounded text-sm mt-1" placeholder="+27..." />
+                                    </div>
+                                </div>
+
+                                {/* Signature Pad */}
+                                <div className="mb-6">
+                                    <label className="text-xs text-blue-300 uppercase font-bold ml-1 mb-2 block">Customer Signature</label>
+                                    <canvas 
+                                        ref={canvasRef}
+                                        className="signature-pad h-32 w-full rounded"
+                                        onMouseDown={startDrawing}
+                                        onMouseMove={draw}
+                                        onMouseUp={stopDrawing}
+                                        onMouseLeave={stopDrawing}
+                                        onTouchStart={startDrawing}
+                                        onTouchMove={draw}
+                                        onTouchEnd={stopDrawing}
+                                    />
+                                    <div className="flex justify-between mt-1">
+                                        <button onClick={clearSignature} className="text-[10px] text-gray-400 hover:text-white">Clear</button>
+                                        <span className="text-[10px] text-gray-500">Sign within the box</span>
+                                    </div>
+                                </div>
+
+                                {/* Buttons */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button 
+                                        className="bg-slate-700 hover:bg-slate-600 text-white py-3 rounded font-bold text-sm"
+                                        onClick={() => setShowCheckout(false)}
+                                    >
+                                        CANCEL
+                                    </button>
+                                    <button 
+                                        className="bg-blue-600 hover:bg-blue-500 text-white py-3 rounded font-bold text-sm shadow-[0_0_15px_rgba(37,99,235,0.5)] flex justify-center items-center"
+                                        onClick={handlePayment}
+                                        disabled={loading}
+                                    >
+                                        {loading ? <div className="loader mr-2"></div> : 'PAY NOW'} <i className="fa-solid fa-bolt ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const FeatureToggle = ({ active, onClick, icon, title, desc, price, setup, highlight, muted }) => (
+            <div 
+                onClick={onClick}
+                className={`feature-card cursor-pointer p-4 rounded-md flex items-start group ${active ? 'active' : ''} ${muted ? 'opacity-75' : ''}`}
+            >
+                <div className={`mt-1 mr-4 flex-shrink-0 text-gray-400 dark:text-gray-500 ${active ? 'text-blue-600 dark:text-blue-400' : ''}`}>
+                    <i className={`fa-solid ${icon} fa-lg`}></i>
+                </div>
+                <div className="flex-grow">
+                    <div className="flex justify-between items-center mb-1">
+                        <h3 className={`font-bold text-sm ${active ? 'text-blue-900 dark:text-blue-300' : 'text-gray-800 dark:text-gray-200'}`}>{title}</h3>
+                        {highlight && !active && <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Recommended</span>}
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-1">{desc}</p>
+                </div>
+                <div className="text-right ml-3 min-w-[80px]">
+                    <div className={`font-bold text-sm ${active ? 'text-blue-900 dark:text-blue-300' : 'text-gray-600 dark:text-gray-400'}`}>{active ? '' : '+'}R{price}</div>
+                    <div className="text-[9px] text-gray-400 dark:text-gray-500 font-medium uppercase">+R{setup} Setup</div>
+                </div>
+            </div>
+        );
+
+        const ItemRow = ({ label, price }) => (
+            <div className="flex justify-between items-center">
+                <span>{label}</span>
+                <span className="font-medium">R {price.toLocaleString()}</span>
+            </div>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                .then(registration => console.log('SW registered: ', registration))
+                .catch(registrationError => console.log('SW registration failed: ', registrationError));
+            });
+        }
+    </script>
+</body>
+</html>
+
 
