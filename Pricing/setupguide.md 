@@ -1,0 +1,30 @@
+Setup Guide: Orion Calculator PWA
+​Prerequisites
+​GitHub Repository (Public)
+​Google Cloud Project (or Apps Script Access)
+​Yoco Merchant Account (Test/Live Keys)
+​Deployment Steps
+​1. Frontend (GitHub Pages)
+​Ensure the following file structure exists:
+​Pricing/index.html
+​Pricing/manifest.json
+​Pricing/sw.js
+​Pricing/404.html
+​Update the manifest.json start_url to "./index.html".
+​In index.html, ensure the BACKEND_URL constant points to your deployed Google Web App URL.
+​Enable GitHub Pages in Repo Settings -> Source: main branch.
+​2. Backend (Google Apps Script)
+​Create a new Google Sheet.
+​Open Extensions > Apps Script.
+​Paste the backend code (Code.gs).
+​Set Script Properties:
+​YOCO_SECRET_KEY: sk_test_... (or live key)
+​SHEET_ID: 1FZx_uWK2ZBRcZi8gWgqFGQNbh4xkbWicwCxW0PgQXDA
+​Deploy as Web App -> Execute as "Me" -> Access: "Anyone".
+​3. Testing
+​Open the hosted URL on a mobile device.
+​Test the "Add to Home Screen" prompt.
+​Run a test transaction (Order ID should appear in Google Sheets).
+​Troubleshooting
+​CORS Errors: Ensure the GAS Web App is deployed with Access set to "Anyone".
+​Signature Pad Issues: Ensure touch-action: none is present in CSS for mobile scrolling prevention.
