@@ -3,238 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORION DEV CORE | Hospitality AI Ecosystem</title>
+    <title>Orion Dev Core | AI & PWA Solutions</title>
+    <meta name="description" content="Orion Dev Core: Building the future of hotel management and progressive web apps. Home of Suites.">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts: Quicksand -->
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
-        
+        /* Custom Branding */
         :root {
-            --neon-blue: #3b82f6;
-            --neon-purple: #a855f7;
-            --bg-dark: #0f172a;
+            --orion-red: #FF0000;
+            --orion-dark: #050505;
+            --orion-panel: #111111;
+            --orion-yellow: #FFD700;
         }
 
-        body { 
-            font-family: 'Quicksand', sans-serif; 
-            background-color: var(--bg-dark); 
-            color: white; 
+        body {
+            background-color: var(--orion-dark);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
             overflow-x: hidden;
         }
-        
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Orbitron', sans-serif;
         }
 
-        .glass-card:hover {
-            transform: translateY(-5px);
-            background: rgba(30, 41, 59, 0.6);
-            border-color: rgba(59, 130, 246, 0.3);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        /* Neon Glow Effects */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        .glow-box {
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
         }
 
-        .glass-card:hover::before {
-            opacity: 1;
-        }
-        
-        /* Cyberpunk POS Card Special Styling */
-        .pos-card:hover {
-            border-color: rgba(168, 85, 247, 0.5);
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.2);
-        }
-        .pos-card:hover::before {
-            background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
-        }
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
 
-        /* Hero Background Animation */
-        .hero-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 25%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Floating WhatsApp Button */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #25d366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-        }
+        /* Mobile Menu Animation */
+        #mobile-menu { transition: transform 0.3s ease-in-out; }
+        .menu-open { transform: translateX(0) !important; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="antialiased selection:bg-red-900 selection:text-white">
 
-    <!-- Background -->
-    <div class="hero-bg"></div>
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <i class="ph ph-lightning-fill text-red-600 text-2xl"></i>
+                    <span class="brand-font font-bold text-xl tracking-wider">ORION<span class="text-red-600">DEV</span>CORE</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="hover:text-red-500 transition px-3 py-2 text-sm font-medium">Home</a>
+                        <a href="#suites" class="hover:text-red-500 transition px-3 py-2 text-sm font-medium">Suites</a>
+                        <a href="#services" class="hover:text-red-500 transition px-3 py-2 text-sm font-medium">Services</a>
+                        <a href="#contact" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-bold transition shadow-[0_0_15px_rgba(255,0,0,0.4)]">Get in Touch</a>
+                    </div>
+                </div>
 
-    <!-- Navigation -->
-    <nav class="w-full p-6 flex justify-between items-center z-50">
-        <div class="flex flex-col">
-            <h1 class="text-2xl font-bold tracking-tighter">
-                ORION <span class="text-blue-500">DEV CORE</span>
-            </h1>
-            <span class="text-[10px] text-gray-400 tracking-widest uppercase">Automated Business Solutions</span>
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMenu()" class="text-gray-300 hover:text-white p-2">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-        <a href="#contact" class="px-4 py-2 text-sm font-semibold text-gray-300 hover:text-white border border-gray-700 hover:border-blue-500 rounded-lg transition-all">
-            Contact
-        </a>
     </nav>
 
-    <!-- Hero Section -->
-    <main class="flex-grow flex flex-col items-center justify-center px-4 py-12 text-center z-10">
-        
-        <div class="max-w-3xl mb-16 animate-fade-in-up">
-            <h2 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                AI Amplification.
-                <br/>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Super Powerful Creations.</span>
-            </h2>
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
-                For all generations. Welcome to the Orion Hospitality Ecosystem. 
-                Select a module to launch.
-            </p>
+    <!-- MOBILE MENU OVERLAY -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-black transform translate-x-full md:hidden flex flex-col justify-center items-center space-y-8">
+        <button onclick="toggleMenu()" class="absolute top-5 right-5 text-gray-400">
+            <i class="ph ph-x text-3xl"></i>
+        </button>
+        <a href="#home" onclick="toggleMenu()" class="text-2xl font-bold hover:text-red-500">Home</a>
+        <a href="#suites" onclick="toggleMenu()" class="text-2xl font-bold hover:text-red-500">Suites App</a>
+        <a href="#services" onclick="toggleMenu()" class="text-2xl font-bold hover:text-red-500">Services</a>
+        <a href="#contact" onclick="toggleMenu()" class="text-red-500 font-bold text-2xl">Contact Us</a>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-red-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-72 h-72 bg-yellow-600/5 rounded-full blur-3xl"></div>
         </div>
 
-        <!-- Ecosystem Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-block mb-4 px-3 py-1 border border-red-500/30 rounded-full bg-red-500/10 backdrop-blur-sm">
+                <span class="text-red-500 text-xs font-bold tracking-widest uppercase">PWA Specialists</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                DIGITAL <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-500 glow-text">EMPIRES</span><br>
+                FOR THE BRAVE.
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-400">
+                We build high-performance Progressive Web Apps and AI-driven systems.
+                Fast. Secure. Future-proof.
+            </p>
+            <div class="mt-10 flex justify-center gap-4">
+                <a href="#suites" class="px-8 py-4 border border-red-600 bg-red-600/10 text-red-500 font-bold rounded-lg hover:bg-red-600 hover:text-white transition duration-300">
+                    Discover Suites
+                </a>
+                <a href="#contact" class="px-8 py-4 border border-white/10 bg-white/5 text-white font-bold rounded-lg hover:bg-white/10 transition duration-300">
+                    Start Project
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLAGSHIP PRODUCT: SUITES -->
+    <section id="suites" class="py-20 bg-[#0a0a0a] border-y border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                <!-- Content -->
+                <div class="mb-12 lg:mb-0">
+                    <h2 class="text-red-600 font-bold tracking-widest uppercase mb-2">Flagship Product</h2>
+                    <h3 class="text-4xl font-bold text-white mb-6">SUITES DASHBOARD</h3>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        The all-in-one command center for modern hotels. Manage guest requests, pricing strategies, and staff tasks from a single, lightning-fast dashboard.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-gray-300">
+                            <i class="ph ph-check-circle text-yellow-500 mr-3 text-xl"></i>
+                            Real-time Guest Requests
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <i class="ph ph-check-circle text-yellow-500 mr-3 text-xl"></i>
+                            Dynamic Pricing Control
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <i class="ph ph-check-circle text-yellow-500 mr-3 text-xl"></i>
+                            Staff Performance Tracking
+                        </li>
+                    </ul>
+                    <a href="#" class="inline-flex items-center text-white font-bold border-b-2 border-red-600 pb-1 hover:text-red-500 transition">
+                        Request Demo <i class="ph ph-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Visual/Mockup -->
+                <div class="relative glow-box rounded-2xl bg-gray-900 p-4 aspect-video flex items-center justify-center">
+                    <!-- Abstract Dashboard UI Mockup -->
+                    <div class="w-full h-full bg-black rounded-lg border border-gray-800 p-4 relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-2">
+                            <div class="w-32 h-4 bg-gray-800 rounded"></div>
+                            <div class="flex gap-2">
+                                <div class="w-8 h-8 bg-red-900/50 rounded-full"></div>
+                                <div class="w-8 h-8 bg-gray-800 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mb-4">
+                            <div class="bg-gray-900 h-24 rounded border border-gray-800 p-3">
+                                <div class="text-xs text-gray-500">OCCUPANCY</div>
+                                <div class="text-2xl font-bold text-red-500 mt-2">84%</div>
+                            </div>
+                            <div class="bg-gray-900 h-24 rounded border border-gray-800 p-3">
+                                <div class="text-xs text-gray-500">REVENUE</div>
+                                <div class="text-2xl font-bold text-yellow-500 mt-2">R 42k</div>
+                            </div>
+                            <div class="bg-gray-900 h-24 rounded border border-gray-800 p-3">
+                                <div class="text-xs text-gray-500">REQUESTS</div>
+                                <div class="text-2xl font-bold text-white mt-2">12</div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="h-8 bg-gray-900/50 w-full rounded"></div>
+                            <div class="h-8 bg-gray-900/50 w-full rounded"></div>
+                            <div class="h-8 bg-gray-900/50 w-full rounded"></div>
+                        </div>
+                        <!-- Overlay Badge -->
+                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <span class="bg-red-600 text-white px-4 py-2 rounded font-bold tracking-widest border border-red-400 shadow-xl transform -rotate-6">
+                                COMING SOON
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">CORE CAPABILITIES</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">We don't just write code. We engineer business solutions.</p>
+            </div>
             
-            <!-- 1. Price Builder (Active Sales Tool) -->
-            <a href="/pricing/" class="glass-card p-8 rounded-2xl flex flex-col items-start group text-left h-full">
-                <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                    <i class="fa-solid fa-calculator fa-xl"></i>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-[#0f0f0f] p-8 rounded-xl border border-gray-800 hover:border-red-600/50 transition duration-300 group">
+                    <div class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-red-600 transition">
+                        <i class="ph ph-device-mobile text-red-500 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Progressive Web Apps</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Apps that work offline, install on any device, and require no app store downloads. The future of mobile distribution.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold mb-2 text-white">Orion Hotel Suite</h3>
-                <p class="text-sm text-gray-400 mb-6 flex-grow">
-                    ROI Calculator & Proposal Generator. Build custom packages for 3-5 Star properties.
-                </p>
-                <div class="flex items-center text-blue-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
-                    Launch Builder <i class="fa-solid fa-arrow-right ml-2"></i>
-                </div>
-            </a>
 
-            <!-- 2. Manager Dashboard (Ops) -->
-            <a href="/dashboard/" class="glass-card p-8 rounded-2xl flex flex-col items-start group text-left h-full">
-                <div class="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-6 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-                    <i class="fa-solid fa-tower-control fa-xl"></i>
+                <!-- Card 2 -->
+                <div class="bg-[#0f0f0f] p-8 rounded-xl border border-gray-800 hover:border-yellow-600/50 transition duration-300 group">
+                    <div class="w-12 h-12 bg-yellow-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-yellow-600 transition">
+                        <i class="ph ph-brain text-yellow-500 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Integration</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        We deploy LLMs (Large Language Models) into your business flow to automate support, analysis, and content generation.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold mb-2 text-white">Manager OS</h3>
-                <p class="text-sm text-gray-400 mb-6 flex-grow">
-                    Mission Control. Real-time ticket routing, housekeeping tracking, and analytics.
-                </p>
-                <div class="flex items-center text-emerald-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
-                    Access Dashboard <i class="fa-solid fa-lock ml-2 text-[10px]"></i>
-                </div>
-            </a>
 
-            <!-- 3. Cyberpunk mPOS (The Skeleton) -->
-            <a href="/mpos/" class="glass-card pos-card p-8 rounded-2xl flex flex-col items-start group text-left h-full relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 opacity-10 text-purple-600 rotate-12">
-                    <i class="fa-solid fa-microchip fa-8x"></i>
+                <!-- Card 3 -->
+                <div class="bg-[#0f0f0f] p-8 rounded-xl border border-gray-800 hover:border-red-600/50 transition duration-300 group">
+                    <div class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-red-600 transition">
+                        <i class="ph ph-code text-red-500 text-2xl group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Custom Systems</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        From inventory management to complex booking engines. If you can dream it, we can engineer it.
+                    </p>
                 </div>
-                <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-6 text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors z-10">
-                    <i class="fa-solid fa-fingerprint fa-xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold mb-2 text-white z-10">Orion Auto-Business</h3>
-                <p class="text-sm text-gray-400 mb-6 flex-grow z-10">
-                    <span class="text-purple-400 font-bold">CONCEPT:</span> The Automated Skeleton. More than POS. It's the central nervous system.
-                </p>
-                <div class="flex items-center text-purple-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform z-10">
-                    Initialize System <i class="fa-solid fa-terminal ml-2"></i>
-                </div>
-            </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT / FOOTER -->
+    <section id="contact" class="py-20 bg-gradient-to-t from-red-900/10 to-transparent">
+        <div class="max-w-3xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-6">READY TO UPGRADE?</h2>
+            <p class="text-gray-300 mb-10 text-lg">
+                Stop using outdated tools. Let's build something powerful together.
+            </p>
             
-             <!-- 4. Legal Suite -->
-            <a href="/legal/" class="glass-card p-8 rounded-2xl flex flex-col items-start group text-left h-full">
-                <div class="w-12 h-12 rounded-lg bg-slate-500/10 flex items-center justify-center mb-6 text-slate-400 group-hover:bg-slate-500 group-hover:text-white transition-colors">
-                    <i class="fa-solid fa-scale-balanced fa-xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold mb-2 text-white">Orion Legal Suite</h3>
-                <p class="text-sm text-gray-400 mb-6 flex-grow">
-                   SLA, POPIA Compliance, and Contract Management hub.
-                </p>
-                <div class="flex items-center text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
-                    View Docs <i class="fa-solid fa-file-contract ml-2"></i>
-                </div>
-            </a>
-
-             <!-- 5. Guest AI Demo (Iframe integration) -->
-             <div class="glass-card p-0 rounded-2xl md:col-span-2 overflow-hidden h-64 md:h-auto relative group">
-                <div class="absolute inset-0 bg-black/50 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <span class="text-white font-bold text-lg mb-2">Live Guest Experience</span>
-                    <span class="text-xs text-gray-300 uppercase tracking-widest">Click to Interact</span>
-                </div>
-                <!-- REPLACE THE SRC BELOW WITH YOUR ACTUAL CHAT URL IF DIFFERENT -->
-                <iframe src="https://your-basic-chat-url.com" class="w-full h-full border-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500"></iframe>
-                <div class="absolute bottom-4 left-4 z-20 pointer-events-none">
-                    <div class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                        LIVE DEMO
+            <div class="bg-black/50 p-8 rounded-2xl border border-gray-800 backdrop-blur-sm">
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    <div class="text-left">
+                        <div class="text-xs text-gray-500 uppercase font-bold mb-1">Direct Line</div>
+                        <div class="text-xl font-bold hover:text-red-500 transition">
+                            <i class="ph ph-whatsapp-logo text-green-500 mr-2"></i> +27 72 497 1810
+                        </div>
+                    </div>
+                    <div class="h-8 w-px bg-gray-700 hidden md:block"></div>
+                    <div class="text-left">
+                        <div class="text-xs text-gray-500 uppercase font-bold mb-1">Email</div>
+                        <div class="text-xl font-bold hover:text-red-500 transition">
+                            <a href="mailto:graham@oriondevcore.com">graham@oriondevcore.com</a>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <footer class="mt-20 text-gray-600 text-sm">
+                <p>&copy; 2026 Orion Dev Core. All rights reserved.</p>
+                <p class="mt-2">Graham Schubach | Owner</p>
+            </footer>
         </div>
+    </section>
 
-    </main>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('menu-open');
+        }
 
-    <!-- Footer -->
-    <footer class="p-8 text-center border-t border-gray-800 bg-black/20">
-        <p class="text-gray-500 text-xs mb-2">
-            &copy; 2026 Orion Dev Core. All Rights Reserved.
-        </p>
-        <p class="text-gray-600 text-[10px]">
-            Made with <i class="fa-solid fa-heart text-red-900"></i> & AI in South Africa.
-        </p>
-    </footer>
-
-    <!-- WhatsApp Floating Action Button -->
-    <a href="https://wa.me/27724971810?text=Hi%20Graham,%20I'm%20interested%20in%20the%20Orion%20Hotel%20Suite." 
-       class="whatsapp-float" 
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="Chat on WhatsApp">
-        <i class="fa-brands fa-whatsapp fa-2x"></i>
-    </a>
-
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.remove('menu-open');
+            });
+        });
+    </script>
 </body>
 </html>
-
-
