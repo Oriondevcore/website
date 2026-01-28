@@ -3,94 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Orion Hospitality Suite | Professional Quote Builder</title>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#1e3a8a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-
+    <title>Orion Commercial Agreement</title>
     <!-- React & Babel -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts: Quicksand -->
+    <!-- HTML2PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
         
-        :root {
-            --bg-primary: #f3f4f6;
-            --text-primary: #1f2937;
-            --card-bg: #ffffff;
-            --card-border: #e5e7eb;
-            --accent-color: #1e3a8a;
-            --accent-light: #eff6ff;
+        /* A4 Paper Look */
+        .paper-sheet {
+            background: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            min-height: 297mm; /* A4 Height */
+            position: relative;
         }
 
-        .dark-mode {
-            --bg-primary: #0f172a;
-            --text-primary: #f8fafc;
-            --card-bg: #1e293b;
-            --card-border: #334155;
-            --accent-color: #60a5fa;
-            --accent-light: #1e293b;
+        /* Clean Inputs */
+        .input-clean {
+            border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; width: 100%; font-size: 13px; outline: none; transition: all 0.2s;
         }
+        .input-clean:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
 
-        body { 
-            font-family: 'Quicksand', sans-serif; 
-            background-color: var(--bg-primary); 
-            color: var(--text-primary);
-            transition: background-color 0.3s, color 0.3s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Cyberpunk/mPOS Modal Styles */
-        .cyberpunk-modal {
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(10px);
-            border: 1px solid #3b82f6;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-        }
+        /* Signature Canvas */
+        .sig-canvas { border: 2px dashed #cbd5e1; background: #f8fafc; cursor: crosshair; touch-action: none; width: 100%; height: 120px; border-radius: 8px; }
         
-        .cyberpunk-input {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #fff;
+        /* Print/PDF styles */
+        @media print {
+            body { background: white; }
+            .paper-sheet { box-shadow: none; }
+            .no-print { display: none !important; }
         }
-        .cyberpunk-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
-            outline: none;
-        }
-
-        /* Signature Pad Area */
-        .signature-pad {
-            background-color: #fff;
-            border: 2px dashed #cbd5e1;
-            cursor: crosshair;
-            touch-action: none; /* Prevents scrolling while signing */
-        }
-        .dark-mode .signature-pad {
-            background-color: #1e293b;
-            border-color: #475569;
-        }
-
-        /* Loading Spinner */
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -99,23 +50,15 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // UPDATED BACKEND URL
-        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzvrRuWjAwhIGUwCF79eUFKc9kiP6AiubQgfdkxIqcP3wK-Zb-fW4eyEJQLRKC9XnDqsA/exec"; 
-
         const App = () => {
-            const [darkMode, setDarkMode] = useState(false);
-            const [rooms, setRooms] = useState(18);
-            const [starRating, setStarRating] = useState(3); 
-            const [outlets, setOutlets] = useState(0); 
-            const [showCheckout, setShowCheckout] = useState(false);
-            const [loading, setLoading] = useState(false);
+            // STATE
+            const [rooms, setRooms] = useState(20);
+            const [starRating, setStarRating] = useState(3);
+            const [outlets, setOutlets] = useState(0);
             const [hotelName, setHotelName] = useState("");
+            const [managerName, setManagerName] = useState("");
             
-            // Signature State
-            const canvasRef = useRef(null);
-            const [isDrawing, setIsDrawing] = useState(false);
-            const [hasSignature, setHasSignature] = useState(false);
-            
+            // MODULES
             const [features, setFeatures] = useState({
                 base: true,
                 multilang: false,
@@ -125,8 +68,13 @@
             });
 
             const [costs, setCosts] = useState({ monthly: 0, setup: 0 });
+            
+            // SIGNATURE
+            const canvasRef = useRef(null);
+            const [isDrawing, setIsDrawing] = useState(false);
+            const [hasSignature, setHasSignature] = useState(false);
 
-            // Pricing Constants
+            // PRICING CONSTANTS
             const PRICES = {
                 base: { setup: 4999, monthly: 999 },
                 multilang: { setup: 2500, monthly: 500 },
@@ -136,7 +84,8 @@
                 outletCost: 3500 
             };
 
-            const calculateCosts = () => {
+            // CALCULATION ENGINE (Your Logic)
+            useEffect(() => {
                 let monthly = PRICES.base.monthly;
                 let setup = PRICES.base.setup;
 
@@ -147,6 +96,7 @@
 
                 monthly += (outlets * PRICES.outletCost);
 
+                // Room Scaling Logic
                 let roomCost = 0;
                 if (rooms > 18) {
                     const extraRooms = rooms - 18;
@@ -156,10 +106,12 @@
                     roomCost = extraRooms * ratePerRoom;
                 }
 
+                // Star Rating Multiplier
                 let multiplier = 1;
                 if (starRating === 4) multiplier = 1.25;
                 if (starRating === 5) multiplier = 1.5;
 
+                // Enterprise Cap Logic
                 if (rooms >= 150) {
                      if (starRating === 3 && monthly < 18000) monthly = 18000;
                      if (starRating === 5 && monthly < 25000) monthly = 25000;
@@ -169,421 +121,230 @@
                 }
 
                 setCosts({ monthly: Math.round(monthly), setup });
-            };
+            }, [rooms, features, starRating, outlets]);
 
-            useEffect(() => {
-                calculateCosts();
-                if (darkMode) {
-                    document.body.classList.add('dark-mode');
-                } else {
-                    document.body.classList.remove('dark-mode');
-                }
-            }, [rooms, features, starRating, outlets, darkMode]);
+            const toggleFeature = (key) => setFeatures(prev => ({ ...prev, [key]: !prev[key] }));
+            const formatZAR = (val) => new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }).format(val);
 
-            const toggleFeature = (key) => {
-                setFeatures(prev => ({ ...prev, [key]: !prev[key] }));
-            };
-
-            const formatCurrency = (val) => {
-                return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }).format(val);
-            };
-
-            // --- SIGNATURE PAD LOGIC ---
-            useEffect(() => {
-                if (showCheckout && canvasRef.current) {
-                    const canvas = canvasRef.current;
-                    const ctx = canvas.getContext('2d');
-                    
-                    // Set canvas resolution for sharpness
-                    const rect = canvas.getBoundingClientRect();
-                    canvas.width = rect.width;
-                    canvas.height = rect.height;
-                    
-                    ctx.strokeStyle = darkMode ? "#ffffff" : "#000000";
-                    ctx.lineWidth = 2;
-                    ctx.lineCap = 'round';
-                }
-            }, [showCheckout, darkMode]);
-
+            // CANVAS LOGIC
             const startDrawing = (e) => {
-                const canvas = canvasRef.current;
-                const ctx = canvas.getContext('2d');
-                const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX || e.touches[0].clientX) - rect.left;
-                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                const ctx = canvasRef.current.getContext('2d');
+                const rect = canvasRef.current.getBoundingClientRect();
+                // Handle Touch or Mouse
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 
                 ctx.beginPath();
-                ctx.moveTo(x, y);
+                ctx.moveTo(clientX - rect.left, clientY - rect.top);
                 setIsDrawing(true);
             };
 
             const draw = (e) => {
                 if (!isDrawing) return;
-                const canvas = canvasRef.current;
-                const ctx = canvas.getContext('2d');
-                const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX || e.touches[0].clientX) - rect.left;
-                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                const ctx = canvasRef.current.getContext('2d');
+                const rect = canvasRef.current.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 
-                ctx.lineTo(x, y);
+                ctx.lineTo(clientX - rect.left, clientY - rect.top);
                 ctx.stroke();
                 setHasSignature(true);
             };
-
-            const stopDrawing = () => {
-                setIsDrawing(false);
-            };
             
-            const clearSignature = () => {
-                const canvas = canvasRef.current;
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const clearSig = () => {
+                const ctx = canvasRef.current.getContext('2d');
+                ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
                 setHasSignature(false);
-            }
+            };
 
-            // --- SUBMIT TO BACKEND ---
-            const handlePayment = async () => {
-                if (!hasSignature) {
-                    alert("Please sign before proceeding.");
-                    return;
-                }
-                
-                setLoading(true);
-                const customerName = document.getElementById('custName').value;
-                const email = document.getElementById('custEmail').value;
-                const phone = document.getElementById('custPhone').value;
-                
-                // Get Signature Image
-                const sigImage = canvasRef.current.toDataURL();
-
-                const payload = {
-                    hotelName,
-                    customerName,
-                    email,
-                    phone,
-                    starRating,
-                    rooms,
-                    outlets,
-                    features: Object.keys(features).filter(k => features[k]),
-                    costs,
-                    signatures: { client: sigImage } // Send signature object
+            const generatePDF = () => {
+                if(!hotelName) return alert("Please enter Hotel Name");
+                const element = document.getElementById('contract-body');
+                const opt = {
+                    margin: 0,
+                    filename: `Orion_Contract_${hotelName}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
-
-                try {
-                    const response = await fetch(BACKEND_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                    });
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        // Redirect to Yoco
-                        window.location.href = result.redirectUrl;
-                    } else {
-                        alert("Error: " + result.message);
-                    }
-                } catch (error) {
-                    alert("Network Error: " + error.message);
-                } finally {
-                    setLoading(false);
-                }
+                
+                // Hide controls temporarily
+                document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
+                
+                html2pdf().set(opt).from(element).save().then(() => {
+                    document.querySelectorAll('.no-print').forEach(el => el.style.display = 'block'); // Restore
+                });
             };
 
             return (
-                <div className={`min-h-screen p-4 md:p-8 max-w-6xl mx-auto transition-colors duration-300`}>
-                    
-                    {/* Top Bar with Toggle */}
-                    <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
-                         <div>
-                             <h1 className="text-3xl font-bold tracking-tight">ORION <span className="text-blue-600 dark:text-blue-400">HOTEL SUITE</span></h1>
-                             <p className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">Enterprise Resource Planning & Guest Experience AI</p>
-                         </div>
-                         <button 
-                            onClick={() => setDarkMode(!darkMode)}
-                            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                         >
-                            {darkMode ? <i className="fa-solid fa-sun text-yellow-400"></i> : <i className="fa-solid fa-moon text-gray-600"></i>}
-                         </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="flex justify-center p-4 md:p-8">
+                    <div id="contract-body" className="paper-sheet w-full max-w-4xl p-8 md:p-12 flex flex-col">
                         
-                        {/* LEFT COLUMN: Configuration */}
-                        <div className="lg:col-span-8 space-y-6">
+                        {/* HEADER */}
+                        <div className="flex justify-between items-start border-b border-slate-200 pb-6 mb-8">
+                            <div>
+                                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">COMMERCIAL AGREEMENT</h1>
+                                <p className="text-xs text-slate-500 font-medium uppercase mt-1 tracking-widest">Enterprise Software License</p>
+                            </div>
+                            <div className="text-right">
+                                <div className="text-lg font-bold text-blue-700">ORION<span className="text-slate-900">DEV</span>CORE</div>
+                                <div className="text-[10px] text-slate-400 mt-1">Reg: 2026/001234/07</div>
+                                <div className="text-[10px] text-slate-400">{new Date().toLocaleDateString()}</div>
+                            </div>
+                        </div>
+
+                        {/* CLIENT DETAILS SECTION */}
+                        <div className="grid md:grid-cols-2 gap-8 mb-8">
+                            <div className="space-y-4">
+                                <h3 className="text-xs font-bold text-slate-400 uppercase border-b border-slate-100 pb-2">Client Information</h3>
+                                <input type="text" placeholder="Hotel / Property Name" className="input-clean font-bold text-sm" value={hotelName} onChange={e => setHotelName(e.target.value)} />
+                                <input type="text" placeholder="Authorized Manager Name" className="input-clean" value={managerName} onChange={e => setManagerName(e.target.value)} />
+                                <input type="email" placeholder="Billing Email Address" className="input-clean" />
+                            </div>
                             
-                            {/* Property Profile */}
-                            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                                <h2 className="text-lg font-bold mb-6 border-l-4 border-blue-600 pl-3">Property Profile</h2>
-                                
-                                <div className="mb-4">
-                                    <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Hotel Name</label>
-                                    <input 
-                                        type="text" 
-                                        placeholder="Enter Property Name"
-                                        className="w-full p-2 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                        value={hotelName}
-                                        onChange={(e) => setHotelName(e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                    {/* Star Rating */}
+                            <div className="space-y-4">
+                                <h3 className="text-xs font-bold text-slate-400 uppercase border-b border-slate-100 pb-2">Property Configuration</h3>
+                                <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Star Rating</label>
-                                        <div className="flex space-x-2">
-                                            {[3, 4, 5].map(star => (
-                                                <button
-                                                    key={star}
-                                                    onClick={() => setStarRating(star)}
-                                                    className={`px-4 py-2 rounded-md font-bold text-sm transition-all ${
-                                                        starRating === star 
-                                                        ? 'bg-blue-600 text-white shadow-lg' 
-                                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200'
-                                                    }`}
-                                                >
-                                                    {star} Star
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <label className="text-[10px] text-slate-500 uppercase font-bold block mb-1">Room Count</label>
+                                        <input type="number" value={rooms} onChange={e => setRooms(parseInt(e.target.value))} className="input-clean text-right font-mono" />
                                     </div>
-
-                                    {/* Outlets */}
                                     <div>
-                                        <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Revenue Centers</label>
-                                        <div className="flex items-center">
-                                            <button onClick={() => setOutlets(Math.max(0, outlets - 1))} className="w-8 h-8 rounded bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">-</button>
-                                            <span className="mx-4 font-bold text-lg w-4 text-center">{outlets}</span>
-                                            <button onClick={() => setOutlets(outlets + 1)} className="w-8 h-8 rounded bg-blue-600 text-white font-bold hover:bg-blue-700">+</button>
-                                        </div>
-                                        <p className="text-[10px] text-gray-400 mt-1">Restaurants/Bars/Spas (+{formatCurrency(PRICES.outletCost)})</p>
+                                        <label className="text-[10px] text-slate-500 uppercase font-bold block mb-1">Star Rating</label>
+                                        <select value={starRating} onChange={e => setStarRating(parseInt(e.target.value))} className="input-clean text-right">
+                                            <option value={3}>3 Star</option>
+                                            <option value={4}>4 Star</option>
+                                            <option value={5}>5 Star</option>
+                                        </select>
                                     </div>
                                 </div>
-
-                                {/* Room Slider */}
-                                <div className="mb-2">
-                                    <div className="flex justify-between items-end mb-2">
-                                        <label className="text-xs uppercase tracking-wider font-semibold">Room Capacity</label>
-                                        <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{rooms} <span className="text-sm font-normal text-gray-500">Keys</span></span>
+                                <div>
+                                    <label className="text-[10px] text-slate-500 uppercase font-bold block mb-1">Revenue Centers (Bars/Spas)</label>
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={() => setOutlets(Math.max(0, outlets-1))} className="no-print bg-slate-100 px-2 py-1 rounded text-slate-600">-</button>
+                                        <span className="font-mono text-sm font-bold w-6 text-center">{outlets}</span>
+                                        <button onClick={() => setOutlets(outlets+1)} className="no-print bg-slate-100 px-2 py-1 rounded text-slate-600">+</button>
                                     </div>
-                                    <input 
-                                        type="range" 
-                                        min="1" 
-                                        max="300" 
-                                        value={rooms} 
-                                        onChange={(e) => setRooms(parseInt(e.target.value))}
-                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Features Builder */}
-                            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                                <h2 className="text-lg font-bold mb-6 border-l-4 border-blue-600 pl-3">System Modules</h2>
-
-                                {/* Base Layer */}
-                                <div className="flex items-center justify-between p-4 mb-4 border border-gray-200 dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-700/50">
-                                    <div className="flex items-start">
-                                        <div className="mt-1 mr-4 text-gray-500 dark:text-gray-400">
-                                            <i className="fa-solid fa-server fa-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bold text-sm uppercase">Core AI Engine</h3>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-md">24/7 Digital Concierge, Policies Hub, Weather, English NLP.</p>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <div className="font-bold">{formatCurrency(999)}<span className="text-[10px] font-normal opacity-75">/mo</span></div>
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase">Included</span>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-3">
-                                    <FeatureToggle active={features.multilang} onClick={() => toggleFeature('multilang')} icon="fa-globe" title="Multi-Language Module" desc="18 Languages (11 Official SA + 7 Intl)." price={PRICES.multilang.monthly} setup={PRICES.multilang.setup} />
-                                    <FeatureToggle active={features.dashboard} onClick={() => toggleFeature('dashboard')} icon="fa-chart-network" title="Manager Dashboard & Routing" desc="Real-time Analytics. Smart routing." price={PRICES.dashboard.monthly} setup={PRICES.dashboard.setup} highlight={true} />
-                                    <FeatureToggle active={features.managerTools} onClick={() => toggleFeature('managerTools')} icon="fa-briefcase" title="AI Management Tools" desc="Complaint Drafting, Itinerary Planner." price={PRICES.managerTools.monthly} setup={PRICES.managerTools.setup} />
-                                    <FeatureToggle active={features.whatsapp} onClick={() => toggleFeature('whatsapp')} icon="fa-brands fa-whatsapp" title="WhatsApp Integration API" desc="Direct guest messaging pre-arrival." price={PRICES.whatsapp.monthly} setup={PRICES.whatsapp.setup} muted={true} />
                                 </div>
                             </div>
                         </div>
 
-                        {/* RIGHT COLUMN: The Receipt */}
-                        <div className="lg:col-span-4">
-                            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 sticky top-8">
-                                <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
-                                    <h2 className="text-lg font-bold">Cost Projection</h2>
-                                    <i className="fa-solid fa-file-invoice-dollar text-gray-400"></i>
-                                </div>
-                                
-                                {/* One-Time Costs */}
-                                <div className="mb-6">
-                                    <h3 className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-3">Implementation (One-Time)</h3>
-                                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                                        <ItemRow label="Core System Setup" price={PRICES.base.setup} />
-                                        {features.multilang && <ItemRow label="Language Config" price={PRICES.multilang.setup} />}
-                                        {features.dashboard && <ItemRow label="Dashboard Deployment" price={PRICES.dashboard.setup} />}
-                                        {features.managerTools && <ItemRow label="AI Tools Training" price={PRICES.managerTools.setup} />}
-                                        {features.whatsapp && <ItemRow label="WhatsApp API Setup" price={PRICES.whatsapp.setup} />}
-                                        <div className="flex justify-between pt-2 mt-2 border-t border-gray-100 dark:border-gray-700 font-bold">
-                                            <span>Total Implementation</span>
-                                            <span>{formatCurrency(costs.setup)}</span>
-                                        </div>
-                                    </div>
-                                </div>
+                        {/* MODULE SELECTION TABLE */}
+                        <div className="mb-8">
+                            <h3 className="text-xs font-bold text-slate-400 uppercase border-b border-slate-100 pb-2 mb-4">Software Modules</h3>
+                            <table className="w-full text-sm">
+                                <thead className="bg-slate-50 text-xs text-slate-500 uppercase font-semibold">
+                                    <tr>
+                                        <th className="py-2 pl-3 text-left">Module Name</th>
+                                        <th className="py-2 text-right pr-4">Monthly Fee</th>
+                                        <th className="py-2 text-center w-12 no-print">Act</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    <tr>
+                                        <td className="py-3 pl-3">
+                                            <div className="font-bold text-slate-700">Core Platform</div>
+                                            <div className="text-xs text-slate-500">Guest AI Chat, Web App, Basic Routing</div>
+                                        </td>
+                                        <td className="py-3 text-right pr-4 font-mono text-slate-600">R 999</td>
+                                        <td className="py-3 text-center no-print"><input type="checkbox" checked disabled className="accent-blue-600" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-3 pl-3">
+                                            <div className="font-bold text-slate-700">Mission Control Dashboard</div>
+                                            <div className="text-xs text-slate-500">Live Alerts, TTR Analytics, Staff Inbox</div>
+                                        </td>
+                                        <td className="py-3 text-right pr-4 font-mono text-slate-600">R 750</td>
+                                        <td className="py-3 text-center no-print"><input type="checkbox" checked={features.dashboard} onChange={() => toggleFeature('dashboard')} className="accent-blue-600" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-3 pl-3">
+                                            <div className="font-bold text-slate-700">Global Linguist Pack</div>
+                                            <div className="text-xs text-slate-500">18 Languages (Incl. Zulu/Xhosa)</div>
+                                        </td>
+                                        <td className="py-3 text-right pr-4 font-mono text-slate-600">R 500</td>
+                                        <td className="py-3 text-center no-print"><input type="checkbox" checked={features.multilang} onChange={() => toggleFeature('multilang')} className="accent-blue-600" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-3 pl-3">
+                                            <div className="font-bold text-slate-700">AI Manager Tools</div>
+                                            <div className="text-xs text-slate-500">Complaint Drafter, Itinerary Planner</div>
+                                        </td>
+                                        <td className="py-3 text-right pr-4 font-mono text-slate-600">R 1,250</td>
+                                        <td className="py-3 text-center no-print"><input type="checkbox" checked={features.managerTools} onChange={() => toggleFeature('managerTools')} className="accent-blue-600" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                                {/* Monthly Costs */}
-                                <div className="mb-6 bg-gray-50 dark:bg-gray-700/30 p-4 rounded border border-gray-100 dark:border-gray-700">
-                                    <h3 className="text-xs uppercase tracking-wider text-gray-500 font-bold mb-3">Monthly Subscription</h3>
-                                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                                        <ItemRow label="Base Platform" price={PRICES.base.monthly} />
-                                        {outlets > 0 && <ItemRow label={`Outlets (${outlets})`} price={outlets * PRICES.outletCost} />}
-                                        {features.multilang && <ItemRow label="Multi-Language" price={PRICES.multilang.monthly} />}
-                                        {features.dashboard && <ItemRow label="Dashboard" price={PRICES.dashboard.monthly} />}
-                                        {features.managerTools && <ItemRow label="Mgmt Tools" price={PRICES.managerTools.monthly} />}
-                                        {features.whatsapp && <ItemRow label="WhatsApp" price={PRICES.whatsapp.monthly} />}
-                                        
-                                        <div className="flex justify-between items-center pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
-                                            <span className="font-bold">Total Monthly</span>
-                                            <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{formatCurrency(costs.monthly)}</span>
-                                        </div>
-                                    </div>
+                        {/* TOTALS BLOCK */}
+                        <div className="flex justify-end mb-8">
+                            <div className="w-full md:w-1/2 bg-slate-50 border border-slate-200 rounded p-6">
+                                <div className="flex justify-between items-center mb-2 text-sm">
+                                    <span className="text-slate-500">One-Time Implementation</span>
+                                    <span className="font-bold text-slate-700">{formatZAR(costs.setup)}</span>
                                 </div>
-                                
-                                <button 
-                                    className="w-full bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-500 text-white font-semibold py-3 rounded-md transition-all shadow-md text-sm uppercase tracking-wide"
-                                    onClick={() => {
-                                        if(!hotelName) { alert('Please enter the Hotel Name first.'); return;}
-                                        setShowCheckout(true);
-                                    }}
-                                >
-                                    Generate Proposal
-                                </button>
+                                <div className="flex justify-between items-center mb-4 text-sm">
+                                    <span className="text-slate-500">Monthly Subscription</span>
+                                    <span className="font-bold text-slate-700">{formatZAR(costs.monthly)}</span>
+                                </div>
+                                <div className="border-t border-slate-300 pt-3 flex justify-between items-center">
+                                    <span className="text-xs font-bold uppercase text-slate-900">Total Due on Signing</span>
+                                    <span className="text-xl font-bold text-blue-700">{formatZAR(costs.setup + costs.monthly)}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Checkout Modal (Cyberpunk mPOS) */}
-                    {showCheckout && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm p-4 overflow-y-auto">
-                            <div className="cyberpunk-modal w-full max-w-md p-6 rounded-xl text-white relative my-auto">
-                                <button 
-                                    onClick={() => setShowCheckout(false)} 
-                                    className="absolute top-4 right-4 text-gray-400 hover:text-white"
-                                >
-                                    <i className="fa-solid fa-times fa-lg"></i>
-                                </button>
-
-                                {/* Header */}
-                                <div className="text-center mb-6">
-                                    <h2 className="text-2xl font-bold text-blue-400 tracking-wider">ORION mPOS</h2>
-                                    <div className="text-xs text-blue-200 mt-1">SECURE TRANSACTION TERMINAL</div>
+                        {/* SIGNATURE SECTION */}
+                        <div className="mt-auto pt-6 border-t border-slate-200">
+                            <div className="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h4 className="text-xs font-bold text-slate-400 uppercase mb-2">Terms of Acceptance</h4>
+                                    <p className="text-[10px] text-slate-500 leading-relaxed mb-4">
+                                        By signing below, the Client agrees to the Terms of Service. This agreement includes a 12-month initial term. Payment is due upon system activation.
+                                    </p>
+                                    <div className="text-xs font-bold text-slate-900">Signed at: <span className="font-normal">{new Date().toLocaleDateString()}</span></div>
                                 </div>
-
-                                {/* Amount */}
-                                <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 mb-6 text-center">
-                                    <div className="text-gray-400 text-xs uppercase mb-1">Total Amount Due</div>
-                                    <div className="text-3xl font-mono text-green-400">{formatCurrency(costs.setup + costs.monthly)}</div>
-                                </div>
-
-                                {/* Form */}
-                                <div className="space-y-4 mb-6">
-                                    <div>
-                                        <label className="text-xs text-blue-300 uppercase font-bold ml-1">Customer Name</label>
-                                        <input id="custName" type="text" className="cyberpunk-input w-full p-2 rounded text-sm mt-1" placeholder="Enter Full Name" />
-                                    </div>
-                                    <div>
-                                        <label className="text-xs text-blue-300 uppercase font-bold ml-1">Email Address</label>
-                                        <input id="custEmail" type="email" className="cyberpunk-input w-full p-2 rounded text-sm mt-1" placeholder="manager@hotel.com" />
-                                    </div>
-                                    <div>
-                                        <label className="text-xs text-blue-300 uppercase font-bold ml-1">Phone Number</label>
-                                        <input id="custPhone" type="tel" className="cyberpunk-input w-full p-2 rounded text-sm mt-1" placeholder="+27..." />
-                                    </div>
-                                </div>
-
-                                {/* Signature Pad */}
-                                <div className="mb-6">
-                                    <label className="text-xs text-blue-300 uppercase font-bold ml-1 mb-2 block">Customer Signature</label>
+                                
+                                <div>
+                                    <h4 className="text-xs font-bold text-slate-400 uppercase mb-2">Authorized Signature</h4>
                                     <canvas 
-                                        ref={canvasRef}
-                                        className="signature-pad h-32 w-full rounded"
+                                        ref={canvasRef} 
+                                        width={400} 
+                                        height={120}
+                                        className="sig-canvas mb-2"
                                         onMouseDown={startDrawing}
                                         onMouseMove={draw}
-                                        onMouseUp={stopDrawing}
-                                        onMouseLeave={stopDrawing}
+                                        onMouseUp={() => setIsDrawing(false)}
+                                        onMouseLeave={() => setIsDrawing(false)}
                                         onTouchStart={startDrawing}
                                         onTouchMove={draw}
-                                        onTouchEnd={stopDrawing}
+                                        onTouchEnd={() => setIsDrawing(false)}
                                     />
-                                    <div className="flex justify-between mt-1">
-                                        <button onClick={clearSignature} className="text-[10px] text-gray-400 hover:text-white">Clear</button>
-                                        <span className="text-[10px] text-gray-500">Sign within the box</span>
+                                    <div className="flex justify-between items-center no-print">
+                                        <button onClick={clearSig} className="text-xs text-red-400 hover:text-red-600 font-bold">Clear Signature</button>
+                                        <button 
+                                            onClick={generatePDF} 
+                                            className="bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded shadow hover:bg-blue-800 transition flex items-center gap-2"
+                                        >
+                                            <i className="ph ph-file-pdf"></i> GENERATE CONTRACT
+                                        </button>
                                     </div>
-                                </div>
-
-                                {/* Buttons */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <button 
-                                        className="bg-slate-700 hover:bg-slate-600 text-white py-3 rounded font-bold text-sm"
-                                        onClick={() => setShowCheckout(false)}
-                                    >
-                                        CANCEL
-                                    </button>
-                                    <button 
-                                        className="bg-blue-600 hover:bg-blue-500 text-white py-3 rounded font-bold text-sm shadow-[0_0_15px_rgba(37,99,235,0.5)] flex justify-center items-center"
-                                        onClick={handlePayment}
-                                        disabled={loading}
-                                    >
-                                        {loading ? <div className="loader mr-2"></div> : 'PAY NOW'} <i className="fa-solid fa-bolt ml-1"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    )}
+                        
+                        {/* FOOTER */}
+                        <div className="text-center mt-8 pt-4 border-t border-slate-100 text-[9px] text-slate-400 uppercase tracking-wider">
+                            Orion Dev Core &copy; 2026 | Enterprise Hospitality Systems
+                        </div>
+                    </div>
                 </div>
             );
         };
 
-        const FeatureToggle = ({ active, onClick, icon, title, desc, price, setup, highlight, muted }) => (
-            <div 
-                onClick={onClick}
-                className={`feature-card cursor-pointer p-4 rounded-md flex items-start group ${active ? 'active' : ''} ${muted ? 'opacity-75' : ''}`}
-            >
-                <div className={`mt-1 mr-4 flex-shrink-0 text-gray-400 dark:text-gray-500 ${active ? 'text-blue-600 dark:text-blue-400' : ''}`}>
-                    <i className={`fa-solid ${icon} fa-lg`}></i>
-                </div>
-                <div className="flex-grow">
-                    <div className="flex justify-between items-center mb-1">
-                        <h3 className={`font-bold text-sm ${active ? 'text-blue-900 dark:text-blue-300' : 'text-gray-800 dark:text-gray-200'}`}>{title}</h3>
-                        {highlight && !active && <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Recommended</span>}
-                    </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-1">{desc}</p>
-                </div>
-                <div className="text-right ml-3 min-w-[80px]">
-                    <div className={`font-bold text-sm ${active ? 'text-blue-900 dark:text-blue-300' : 'text-gray-600 dark:text-gray-400'}`}>{active ? '' : '+'}R{price}</div>
-                    <div className="text-[9px] text-gray-400 dark:text-gray-500 font-medium uppercase">+R{setup} Setup</div>
-                </div>
-            </div>
-        );
-
-        const ItemRow = ({ label, price }) => (
-            <div className="flex justify-between items-center">
-                <span>{label}</span>
-                <span className="font-medium">R {price.toLocaleString()}</span>
-            </div>
-        );
-
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                .then(registration => console.log('SW registered: ', registration))
-                .catch(registrationError => console.log('SW registration failed: ', registrationError));
-            });
-        }
     </script>
 </body>
 </html>
-
