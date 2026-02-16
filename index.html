@@ -3,291 +3,797 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion Dev Core | AI & PWA Solutions</title>
-    <meta name="description" content="Orion Dev Core: Building the future of hotel management and progressive web apps. Home of Suites.">
-    
-    <!-- Tailwind CSS -->
+    <title>Orion Hotel Suite - AI Concierge for African Hospitality</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom Branding */
-        :root {
-            --orion-red: #FF0000;
-            --orion-dark: #050505;
-            --orion-panel: #111111;
-            --orion-yellow: #FFD700;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Space Grotesk', sans-serif; background: #0f0505; color: #e0e0e0; }
+        
+        .header { 
+            background: linear-gradient(135deg, #1a0a0a 0%, #0B1221 100%);
+            border-bottom: 2px solid #FFB627;
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        body {
-            background-color: var(--orion-dark);
-            color: white;
-            font-family: 'Quicksand', sans-serif;
-            overflow-x: hidden;
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        h1, h2, h3, .brand-font {
-            font-family: 'Orbitron', sans-serif;
+        .logo { color: #FFB627; font-weight: 700; font-size: 1.5rem; }
+        
+        .nav { display: flex; gap: 2rem; }
+        .nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; transition: color 0.3s; }
+        .nav a:hover { color: #FFB627; }
+
+        .hero {
+            background: linear-gradient(135deg, #1a0a0a 0%, #0B1221 100%);
+            padding: 4rem 2rem;
+            text-align: center;
         }
 
-        /* Neon Glow Effects */
-        .glow-text {
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-        .glow-box {
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
-            border: 1px solid rgba(255, 0, 0, 0.2);
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        /* Smooth Scroll */
-        html { scroll-behavior: smooth; }
+        .hero-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid #FFB627;
+        }
 
-        /* Mobile Menu Animation */
-        #mobile-menu { transition: transform 0.3s ease-in-out; }
-        .menu-open { transform: translateX(0) !important; }
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #FFB627;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero-tagline {
+            font-size: 1.2rem;
+            color: #FFB627;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero-promise {
+            background: rgba(255, 182, 39, 0.1);
+            border: 2px solid #FFB627;
+            padding: 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background: #FFB627;
+            color: #0f0505;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #FFD966;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            border-bottom: 1px solid rgba(255, 182, 39, 0.2);
+        }
+
+        .section-title {
+            color: #FFB627;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .ghost-routing {
+            background: rgba(193, 88, 23, 0.1);
+            border: 1px solid rgba(255, 182, 39, 0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .ghost-simple {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 1rem;
+        }
+
+        .ghost-detail {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .ghost-detail.show { display: block; }
+
+        .expand-btn {
+            color: #FFB627;
+            background: none;
+            border: 1px solid #FFB627;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .expand-btn:hover {
+            background: #FFB627;
+            color: #0f0505;
+        }
+
+        .james-story {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .james-box {
+            background: rgba(255, 182, 39, 0.05);
+            border: 2px solid #FFB627;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .james-box-title {
+            color: #FFB627;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .james-box-content {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .video-placeholder {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px dashed #FFB627;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            color: #FFB627;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .form-container {
+            background: rgba(193, 88, 23, 0.1);
+            border: 1px solid rgba(255, 182, 39, 0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: #FFB627;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 182, 39, 0.3);
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFB627;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .tier-card {
+            background: rgba(193, 88, 23, 0.1);
+            border: 2px solid rgba(255, 182, 39, 0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tier-card:hover {
+            border-color: #FFB627;
+            background: rgba(193, 88, 23, 0.2);
+        }
+
+        .tier-name {
+            color: #FFB627;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .tier-details {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .tier-highlight {
+            background: rgba(255, 182, 39, 0.2);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: #FFB627;
+        }
+
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .document-card {
+            background: rgba(193, 88, 23, 0.1);
+            border: 1px solid rgba(255, 182, 39, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .document-card:hover {
+            border-color: #FFB627;
+            background: rgba(193, 88, 23, 0.2);
+        }
+
+        .document-title {
+            color: #FFB627;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .document-content {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: left;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .document-content.show { display: block; }
+
+        .footer {
+            background: linear-gradient(135deg, #1a0a0a 0%, #0B1221 100%);
+            border-top: 2px solid #FFB627;
+            padding: 2rem;
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .footer-links { margin-bottom: 1rem; }
+        .footer-links a { color: #FFB627; text-decoration: none; margin: 0 1rem; }
+        .footer-links a:hover { text-decoration: underline; }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .dashboard-preview {
+            border: 2px solid #FFB627;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .dashboard-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .nav { gap: 1rem; font-size: 0.85rem; }
+            .section { padding: 2rem 1rem; }
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-red-900 selection:text-white">
+<body>
 
-    <!-- NAVIGATION -->
-    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-2">
-                    <i class="ph ph-lightning-fill text-red-600 text-2xl"></i>
-                    <span class="brand-font font-bold text-xl tracking-wider">ORION<span class="text-red-600">DEV</span>CORE</span>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#home" class="hover:text-red-500 transition px-3 py-2 text-sm font-medium">Home</a>
-                        <a href="#suites" class="hover:text-red-500 transition px-3 py-2 text-sm font-medium">Suites</a>
-                        <a href="#services" class="hover:text-red-500 transition px-3 py-2 text-sm font-medium">Services</a>
-                        <a href="#contact" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-bold transition shadow-[0_0_15px_rgba(255,0,0,0.4)]">Get in Touch</a>
-                    </div>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="-mr-2 flex md:hidden">
-                    <button onclick="toggleMenu()" class="text-gray-300 hover:text-white p-2">
-                        <i class="ph ph-list text-2xl"></i>
-                    </button>
-                </div>
-            </div>
+<!-- HEADER -->
+<div class="header">
+    <div class="header-content">
+        <div class="logo">ORION HOTEL SUITE</div>
+        <div class="nav">
+            <a href="#home">Home</a>
+            <a href="#ghost">How It Works</a>
+            <a href="#james">James</a>
+            <a href="#onboarding">Try It</a>
+            <a href="#partners">Partners</a>
+            <a href="#documents">Docs</a>
         </div>
-    </nav>
-
-    <!-- MOBILE MENU OVERLAY -->
-    <div id="mobile-menu" class="fixed inset-0 z-40 bg-black transform translate-x-full md:hidden flex flex-col justify-center items-center space-y-8">
-        <button onclick="toggleMenu()" class="absolute top-5 right-5 text-gray-400">
-            <i class="ph ph-x text-3xl"></i>
-        </button>
-        <a href="#home" onclick="toggleMenu()" class="text-2xl font-bold hover:text-red-500">Home</a>
-        <a href="#suites" onclick="toggleMenu()" class="text-2xl font-bold hover:text-red-500">Suites App</a>
-        <a href="#services" onclick="toggleMenu()" class="text-2xl font-bold hover:text-red-500">Services</a>
-        <a href="#contact" onclick="toggleMenu()" class="text-red-500 font-bold text-2xl">Contact Us</a>
     </div>
+</div>
 
-    <!-- HERO SECTION -->
-    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <!-- Background Elements -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-            <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-red-600/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-[-10%] left-[-10%] w-72 h-72 bg-yellow-600/5 rounded-full blur-3xl"></div>
+<!-- HERO SECTION -->
+<div class="hero" id="home">
+    <div class="hero-content">
+        <img src="[INSERT_MARS_BAR_NEBULA_IMAGE_URL]" alt="Mars Bar Nebula" class="hero-image">
+        <h1>Orion Hotel Suite</h1>
+        <div class="hero-tagline">Human imagination. AI amplification. Progressive Web Applications for all generations.</div>
+        <div class="hero-promise">
+            While our AI is smart, your human team is always available. If the chat can't help with something, it will seamlessly connect you with a staff member who can. Your satisfaction is our priority.
+        </div>
+        <a href="#onboarding" class="cta-button">Try the Onboarding</a>
+    </div>
+</div>
+
+<!-- GHOST ROUTING SECTION -->
+<div class="section" id="ghost">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <h2 class="section-title">How Ghost Routing Works</h2>
+        
+        <div class="ghost-routing">
+            <div class="ghost-simple">
+                Your guests chat with James. James understands what they need. Instead of bouncing between WhatsApp, SMS, and email, James routes the request directly to the right staff member who is actually on-site right now.
+            </div>
+            <button class="expand-btn" onclick="toggleGhost()">See How It Works</button>
+            
+            <div class="ghost-detail" id="ghostDetail">
+                <h3 style="color: #FFB627; margin-bottom: 1rem;">The Technology Behind It</h3>
+                <p style="margin-bottom: 1rem;">
+                    When a guest requests housekeeping, our system scans your hotel network to find which housekeeping staff members are currently on-site (we identify them by their phone's unique network address, called a MAC address). We don't use GPS or tracking devices.
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    The ticket goes directly to the staff member who is nearest or most available, not to a general queue. This means faster service, no lost messages, and no staff member wondering if they have a new task.
+                </p>
+                <p>
+                    All of this happens on your own hotel network. No data leaves your property except for billing and analytics (which we anonymize and keep for 2 years per POPIA regulations).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JAMES STORY SECTION -->
+<div class="section" id="james">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h2 class="section-title">What James Does For Your Guests</h2>
+        
+        <div class="james-story">
+            <div class="james-box">
+                <div class="james-box-title">Before They Arrive</div>
+                <div class="james-box-content">
+                    James sends a welcome message with check-in instructions, keycard delivery details, and a personalized itinerary planner. Guests see what your hotel offers before they even arrive.
+                </div>
+                <div class="video-placeholder">
+                    Video embed: [Insert GitHub video link for PRE-STAY demo]
+                </div>
+            </div>
+
+            <div class="james-box">
+                <div class="james-box-title">While They're Here</div>
+                <div class="james-box-content">
+                    Guests need extra towels? A restaurant reservation? To know when the power is coming back after loadshedding? James handles it instantly. No WhatsApp chains. No waiting. Direct to the right staff, right now.
+                </div>
+                <div class="video-placeholder">
+                    Video embed: [Insert GitHub video link for IN-HOUSE demo]
+                </div>
+            </div>
+
+            <div class="james-box">
+                <div class="james-box-title">After They Leave</div>
+                <div class="james-box-content">
+                    James collects final feedback, asks for a Google review, settles the bill, and (per the POPIA Act) asks if the guest wants their data deleted. We keep the anonymized insights. They get peace of mind.
+                </div>
+                <div class="video-placeholder">
+                    Video embed: [Insert GitHub video link for POST-STAY demo]
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ONBOARDING SECTION -->
+<div class="section" id="onboarding">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <h2 class="section-title">See It In Action</h2>
+        <p style="text-align: center; margin-bottom: 2rem; font-size: 1.05rem;">
+            Fill out a quick form to explore how Orion works for a hotel like yours. No pricing on this page. After you submit, we'll schedule a Zoom call to show you the full system and answer your questions.
+        </p>
+
+        <div class="form-container">
+            <form id="onboardingForm">
+                <div class="form-group">
+                    <label class="form-label">Hotel Name</label>
+                    <input type="text" class="form-input" placeholder="Your hotel name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-input" placeholder="City or region" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Number of Rooms</label>
+                    <input type="number" class="form-input" placeholder="How many rooms?" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Star Rating</label>
+                    <select class="form-input" required>
+                        <option value="">Select rating</option>
+                        <option value="2">2-star</option>
+                        <option value="3">3-star</option>
+                        <option value="4">4-star</option>
+                        <option value="5">5-star</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" placeholder="Your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Revenue Centers You're Interested In</label>
+                    <input type="text" class="form-input" placeholder="e.g., Restaurant, Spa, Pool Bar" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label style="display: flex; align-items: center; color: #e0e0e0;">
+                        <input type="checkbox" style="margin-right: 0.5rem;" required>
+                        I accept the Terms & Conditions and Privacy Policy
+                    </label>
+                </div>
+
+                <button type="submit" class="cta-button" style="width: 100%;">Continue to Demo</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- PARTNERS SECTION -->
+<div class="section" id="partners">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h2 class="section-title">Build Your Own Business</h2>
+        <p style="text-align: center; margin-bottom: 3rem; font-size: 1.05rem;">
+            Are you creative, exciting, bold? Join the future with AI as a partner. No office. No strict hours. Your effort = Your money. Commissions from 10% up to 15% + share options. Only 3 spots available.
+        </p>
+
+        <div class="partners-grid">
+            <div class="tier-card">
+                <div class="tier-name">Tier 1: Runner</div>
+                <div class="tier-details">
+                    1 to 8 Properties
+                </div>
+                <div class="tier-highlight">
+                    Setup: 10% commission
+                    Monthly: 0%
+                </div>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-name">Tier 2: Builder</div>
+                <div class="tier-details">
+                    9 to 16 Properties
+                    Training and support to build your team
+                </div>
+                <div class="tier-highlight">
+                    Setup: 12.5% commission
+                    Monthly: 12.5%
+                </div>
+            </div>
+
+            <div class="tier-card">
+                <div class="tier-name">Tier 3: Business Partner</div>
+                <div class="tier-details">
+                    17 to 24 Properties (Capped)
+                </div>
+                <div class="tier-highlight">
+                    Setup: 15% commission
+                    Monthly: 15%
+                    + Share options
+                </div>
+            </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="inline-block mb-4 px-3 py-1 border border-red-500/30 rounded-full bg-red-500/10 backdrop-blur-sm">
-                <span class="text-red-500 text-xs font-bold tracking-widest uppercase">PWA Specialists</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
-                DIGITAL <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-500 glow-text">EMPIRES</span><br>
-                FOR THE BRAVE.
-            </h1>
-            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-400">
-                We build high-performance Progressive Web Apps and AI-driven systems.
-                Fast. Secure. Future-proof.
+        <div style="background: rgba(255, 182, 39, 0.1); border: 2px solid #FFB627; padding: 2rem; border-radius: 12px; margin-top: 2rem; text-align: center;">
+            <p style="margin-bottom: 1rem;">
+                Business inbox: R3,500 invested upfront. We deduct this from your commissions over your first 3 payments. Includes tools to help you succeed and I become your mentor.
             </p>
-            <div class="mt-10 flex justify-center gap-4">
-                <a href="#suites" class="px-8 py-4 border border-red-600 bg-red-600/10 text-red-500 font-bold rounded-lg hover:bg-red-600 hover:text-white transition duration-300">
-                    Discover Suites
-                </a>
-                <a href="#contact" class="px-8 py-4 border border-white/10 bg-white/5 text-white font-bold rounded-lg hover:bg-white/10 transition duration-300">
-                    Start Project
-                </a>
-            </div>
+            <p style="color: #FFB627; font-weight: 700;">Want to build your own app or have an idea? Talk to me.</p>
         </div>
-    </section>
 
-    <!-- FLAGSHIP PRODUCT: SUITES -->
-    <section id="suites" class="py-20 bg-[#0a0a0a] border-y border-white/5 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
-                <!-- Content -->
-                <div class="mb-12 lg:mb-0">
-                    <h2 class="text-red-600 font-bold tracking-widest uppercase mb-2">Flagship Product</h2>
-                    <h3 class="text-4xl font-bold text-white mb-6">SUITES DASHBOARD</h3>
-                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                        The all-in-one command center for modern hotels. Manage guest requests, pricing strategies, and staff tasks from a single, lightning-fast dashboard.
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="#contact" class="cta-button">Become a Partner</a>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD PREVIEW -->
+<div class="section">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h2 class="section-title">Your Mission Control Dashboard</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">
+            See real-time analytics, staff location, loadshedding status, and all incoming guest requests in one place.
+        </p>
+        <div class="dashboard-preview">
+            <img src="[INSERT_DASHBOARD_PREVIEW_IMAGE_URL]" alt="Orion Dashboard Preview">
+        </div>
+    </div>
+</div>
+
+<!-- DOCUMENTS SECTION -->
+<div class="section" id="documents">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h2 class="section-title">Documentation & Compliance</h2>
+
+        <div class="document-grid">
+            <div class="document-card" onclick="toggleDocument('popia')">
+                <div class="document-title">POPIA Compliance</div>
+                <p style="font-size: 0.9rem; color: #999;">Data protection & privacy</p>
+                <div class="document-content" id="popia">
+                    <h4 style="color: #FFB627; margin-bottom: 1rem;">Protection of Personal Information Act (POPIA)</h4>
+                    <p style="margin-bottom: 1rem;">
+                        All guest data is handled with strict compliance to South Africa's POPIA regulations:
                     </p>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center text-gray-300">
-                            <i class="ph ph-check-circle text-yellow-500 mr-3 text-xl"></i>
-                            Real-time Guest Requests
-                        </li>
-                        <li class="flex items-center text-gray-300">
-                            <i class="ph ph-check-circle text-yellow-500 mr-3 text-xl"></i>
-                            Dynamic Pricing Control
-                        </li>
-                        <li class="flex items-center text-gray-300">
-                            <i class="ph ph-check-circle text-yellow-500 mr-3 text-xl"></i>
-                            Staff Performance Tracking
-                        </li>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">Personal data (name, email, room number) is automatically deleted 48 hours after guest checkout</li>
+                        <li style="margin-bottom: 0.5rem;">Anonymized insights (age range, preferences, complaint patterns) are retained for 2 years to help optimize your operations</li>
+                        <li style="margin-bottom: 0.5rem;">Guests can request 100% data deletion at any time</li>
+                        <li style="margin-bottom: 0.5rem;">All data is encrypted in transit and at rest</li>
+                        <li>Biometric data (if used) is processed only during the guest's stay and not retained</li>
                     </ul>
-                    <a href="#" class="inline-flex items-center text-white font-bold border-b-2 border-red-600 pb-1 hover:text-red-500 transition">
-                        Request Demo <i class="ph ph-arrow-right ml-2"></i>
-                    </a>
-                </div>
-                
-                <!-- Visual/Mockup -->
-                <div class="relative glow-box rounded-2xl bg-gray-900 p-4 aspect-video flex items-center justify-center">
-                    <!-- Abstract Dashboard UI Mockup -->
-                    <div class="w-full h-full bg-black rounded-lg border border-gray-800 p-4 relative overflow-hidden">
-                        <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-2">
-                            <div class="w-32 h-4 bg-gray-800 rounded"></div>
-                            <div class="flex gap-2">
-                                <div class="w-8 h-8 bg-red-900/50 rounded-full"></div>
-                                <div class="w-8 h-8 bg-gray-800 rounded-full"></div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4 mb-4">
-                            <div class="bg-gray-900 h-24 rounded border border-gray-800 p-3">
-                                <div class="text-xs text-gray-500">OCCUPANCY</div>
-                                <div class="text-2xl font-bold text-red-500 mt-2">84%</div>
-                            </div>
-                            <div class="bg-gray-900 h-24 rounded border border-gray-800 p-3">
-                                <div class="text-xs text-gray-500">REVENUE</div>
-                                <div class="text-2xl font-bold text-yellow-500 mt-2">R 42k</div>
-                            </div>
-                            <div class="bg-gray-900 h-24 rounded border border-gray-800 p-3">
-                                <div class="text-xs text-gray-500">REQUESTS</div>
-                                <div class="text-2xl font-bold text-white mt-2">12</div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="h-8 bg-gray-900/50 w-full rounded"></div>
-                            <div class="h-8 bg-gray-900/50 w-full rounded"></div>
-                            <div class="h-8 bg-gray-900/50 w-full rounded"></div>
-                        </div>
-                        <!-- Overlay Badge -->
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <span class="bg-red-600 text-white px-4 py-2 rounded font-bold tracking-widest border border-red-400 shadow-xl transform -rotate-6">
-                                COMING SOON
-                            </span>
-                        </div>
-                    </div>
+                    <p style="font-weight: 600; color: #FFB627;">Your data never leaves your property except for billing and analytics.</p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- SERVICES -->
-    <section id="services" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">CORE CAPABILITIES</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">We don't just write code. We engineer business solutions.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-[#0f0f0f] p-8 rounded-xl border border-gray-800 hover:border-red-600/50 transition duration-300 group">
-                    <div class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-red-600 transition">
-                        <i class="ph ph-device-mobile text-red-500 text-2xl group-hover:text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Progressive Web Apps</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Apps that work offline, install on any device, and require no app store downloads. The future of mobile distribution.
+            <div class="document-card" onclick="toggleDocument('ghost-detail')">
+                <div class="document-title">Ghost Routing Technology</div>
+                <p style="font-size: 0.9rem; color: #999;">How local network routing works</p>
+                <div class="document-content" id="ghost-detail">
+                    <h4 style="color: #FFB627; margin-bottom: 1rem;">Ghost Routing: The Local Network Intelligence System</h4>
+                    <p style="margin-bottom: 1rem;">
+                        Orion uses your hotel's Wi-Fi network to route guest requests to the right staff member, without GPS or external tracking.
                     </p>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-[#0f0f0f] p-8 rounded-xl border border-gray-800 hover:border-yellow-600/50 transition duration-300 group">
-                    <div class="w-12 h-12 bg-yellow-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-yellow-600 transition">
-                        <i class="ph ph-brain text-yellow-500 text-2xl group-hover:text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">AI Integration</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        We deploy LLMs (Large Language Models) into your business flow to automate support, analysis, and content generation.
-                    </p>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-[#0f0f0f] p-8 rounded-xl border border-gray-800 hover:border-red-600/50 transition duration-300 group">
-                    <div class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-red-600 transition">
-                        <i class="ph ph-code text-red-500 text-2xl group-hover:text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Custom Systems</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        From inventory management to complex booking engines. If you can dream it, we can engineer it.
+                    <h5 style="color: #FFB627; margin-top: 1rem; margin-bottom: 0.5rem;">How it works:</h5>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Guest Request:</strong> Guest in Room 302 asks for extra towels via James</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>AI Processing:</strong> Gemini identifies this as a housekeeping request</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Network Scan:</strong> System checks which housekeeping staff are currently connected to your Wi-Fi</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Smart Routing:</strong> Ticket is sent to the nearest available staff member</li>
+                        <li><strong>Completion:</strong> No WhatsApp delays, no missed messages, no confusion</li>
+                    </ul>
+                    <p style="color: #999; font-size: 0.9rem;">
+                        No GPS. No location tracking. No external services. Pure local network intelligence running on your property.
                     </p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- CONTACT / FOOTER -->
-    <section id="contact" class="py-20 bg-gradient-to-t from-red-900/10 to-transparent">
-        <div class="max-w-3xl mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold mb-6">READY TO UPGRADE?</h2>
-            <p class="text-gray-300 mb-10 text-lg">
-                Stop using outdated tools. Let's build something powerful together.
-            </p>
-            
-            <div class="bg-black/50 p-8 rounded-2xl border border-gray-800 backdrop-blur-sm">
-                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
-                    <div class="text-left">
-                        <div class="text-xs text-gray-500 uppercase font-bold mb-1">Direct Line</div>
-                        <div class="text-xl font-bold hover:text-red-500 transition">
-                            <i class="ph ph-whatsapp-logo text-green-500 mr-2"></i> +27 72 497 1810
-                        </div>
-                    </div>
-                    <div class="h-8 w-px bg-gray-700 hidden md:block"></div>
-                    <div class="text-left">
-                        <div class="text-xs text-gray-500 uppercase font-bold mb-1">Email</div>
-                        <div class="text-xl font-bold hover:text-red-500 transition">
-                            <a href="mailto:graham@oriondevcore.com">graham@oriondevcore.com</a>
-                        </div>
-                    </div>
+            <div class="document-card" onclick="toggleDocument('james-capabilities')">
+                <div class="document-title">James Capabilities</div>
+                <p style="font-size: 0.9rem; color: #999;">What James can do for your guests</p>
+                <div class="document-content" id="james-capabilities">
+                    <h4 style="color: #FFB627; margin-bottom: 1rem;">James: Your 24/7 AI Concierge</h4>
+                    <h5 style="color: #FFB627; margin-top: 1rem; margin-bottom: 0.5rem;">Pre-Stay Services:</h5>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li>Check-in instructions and keycard delivery coordination</li>
+                        <li>Directions to the hotel from airport or transport</li>
+                        <li>Personalized itinerary planning for local attractions</li>
+                        <li>Room preferences and special requests confirmation</li>
+                    </ul>
+                    <h5 style="color: #FFB627; margin-bottom: 0.5rem;">In-House Services:</h5>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li>Instant housekeeping, maintenance, and concierge requests</li>
+                        <li>Restaurant reservations and menu information</li>
+                        <li>Real-time loadshedding updates and alternative activities</li>
+                        <li>Facility information (pool hours, spa, gym, events)</li>
+                        <li>Local recommendations and booking assistance</li>
+                    </ul>
+                    <h5 style="color: #FFB627; margin-bottom: 0.5rem;">Post-Stay Services:</h5>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li>Final bill review and payment</li>
+                        <li>Google review request generation</li>
+                        <li>POPIA data deletion request processing</li>
+                        <li>Loyalty program enrollment</li>
+                    </ul>
                 </div>
             </div>
 
-            <footer class="mt-20 text-gray-600 text-sm">
-                <p>&copy; 2026 Orion Dev Core. All rights reserved.</p>
-                <p class="mt-2">Graham Schubach | Owner</p>
-            </footer>
+            <div class="document-card" onclick="toggleDocument('integrations')">
+                <div class="document-title">Integrations</div>
+                <p style="font-size: 0.9rem; color: #999;">What we connect to</p>
+                <div class="document-content" id="integrations">
+                    <h4 style="color: #FFB627; margin-bottom: 1rem;">Third-Party Integrations</h4>
+                    <h5 style="color: #FFB627; margin-bottom: 0.5rem;">Property Management Systems:</h5>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li>Nightsbridge (availability, rates, guest data)</li>
+                        <li>Opera, Mews (compatibility roadmap)</li>
+                    </ul>
+                    <h5 style="color: #FFB627; margin-bottom: 0.5rem;">Payment Processing:</h5>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li>Yoco (payment links, deposits, service charges)</li>
+                        <li>SnapScan (alternative payment option)</li>
+                    </ul>
+                    <h5 style="color: #FFB627; margin-bottom: 0.5rem;">Operations:</h5>
+                    <ul style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li>Eskom sePush (real-time loadshedding notifications)</li>
+                        <li>Google Maps (itinerary planning, directions)</li>
+                        <li>Dineplan (restaurant management)</li>
+                    </ul>
+                    <p style="color: #999; font-size: 0.9rem; margin-top: 1rem;">
+                        Missing an integration? Let us know. We build connectors for systems your hotel uses.
+                    </p>
+                </div>
+            </div>
+
+            <div class="document-card" onclick="toggleDocument('terms')">
+                <div class="document-title">Terms & Conditions</div>
+                <p style="font-size: 0.9rem; color: #999;">Service agreement basics</p>
+                <div class="document-content" id="terms">
+                    <h4 style="color: #FFB627; margin-bottom: 1rem;">Orion Hotel Suite - Terms & Conditions</h4>
+                    <p style="margin-bottom: 1rem;"><strong>1. Service Agreement</strong></p>
+                    <p style="margin-bottom: 1rem;">By signing an agreement with Orion Dev Core, you accept the Orion Hotel Suite Service Agreement and agree to the terms outlined herein.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>2. Fees & Payment</strong></p>
+                    <p style="margin-bottom: 1rem;">Setup fees are non-refundable. Monthly fees are due on the agreed date each month. Payment is processed via Yoco or direct bank transfer.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>3. Service Level Agreement (SLA)</strong></p>
+                    <p style="margin-bottom: 1rem;">Orion commits to 99.9% system uptime. Scheduled maintenance windows will be announced 48 hours in advance.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>4. Data & Privacy</strong></p>
+                    <p style="margin-bottom: 1rem;">All guest data is handled per POPIA regulations. See our POPIA Compliance document for full details.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>5. Termination</strong></p>
+                    <p>Either party may terminate this agreement with 30 days written notice. No early termination penalties apply.</p>
+                </div>
+            </div>
+
+            <div class="document-card" onclick="toggleDocument('privacy')">
+                <div class="document-title">Privacy Policy</div>
+                <p style="font-size: 0.9rem; color: #999;">Your data, our responsibility</p>
+                <div class="document-content" id="privacy">
+                    <h4 style="color: #FFB627; margin-bottom: 1rem;">Privacy Policy - Orion Dev Core</h4>
+                    <p style="margin-bottom: 1rem;">
+                        Orion Dev Core values your privacy and the privacy of your guests. This policy explains how we handle data.
+                    </p>
+                    <p style="margin-bottom: 1rem;"><strong>Hotel Data:</strong> Your hotel configuration, contact information, and guest lists are stored securely in encrypted databases. You maintain full access and control.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>Guest Data:</strong> Guest chat logs, requests, and personal information are deleted 48 hours after checkout, per POPIA requirements.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>Anonymized Analytics:</strong> Aggregated, anonymized trends (e.g., "guests aged 35-45 book itineraries more frequently") are retained for 2 years to help optimize your operations.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>Payment Data:</strong> Payment processing is handled by Yoco, a PCI-DSS compliant payment processor. We do not store credit card data.</p>
+                    
+                    <p style="margin-bottom: 1rem;"><strong>Third-Party Sharing:</strong> We never sell your data. Third-party integrations (PMS, Eskom, etc.) are accessed only with your explicit permission.</p>
+                    
+                    <p><strong>Questions?</strong> Contact us at graham@oriondevcore.com</p>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('menu-open');
-        }
+<!-- CONTACT / PARTNERS SECTION -->
+<div class="section" id="contact">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h2 class="section-title">Become a Partner</h2>
+        
+        <div class="form-container">
+            <form id="partnerForm">
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" placeholder="Full name" required>
+                </div>
 
-        // Close mobile menu on link click
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('mobile-menu').classList.remove('menu-open');
-            });
-        });
-    </script>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-input" placeholder="+27..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tell Us About Yourself</label>
+                    <textarea class="form-input" style="min-height: 100px;" placeholder="What's your background? Why are you interested?" required></textarea>
+                </div>
+
+                <button type="submit" class="cta-button" style="width: 100%;">Submit Application</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <div class="footer-links">
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms & Conditions</a>
+        <a href="#documents">POPIA Compliance</a>
+    </div>
+    <p style="margin-bottom: 0.5rem;">Orion Hotel Suite - Built by Claude AI + Graham Schubach</p>
+    <p style="margin-bottom: 0.5rem;">Orion Dev Core | South Africa</p>
+    <p>Email: graham@oriondevcore.com | Phone: +27 72 497 1810</p>
+    <p style="margin-top: 1rem; font-size: 0.85rem;">Data handling complies with the Protection of Personal Information Act (POPIA), 2013.</p>
+</div>
+
+<script>
+    function toggleGhost() {
+        document.getElementById('ghostDetail').classList.toggle('show');
+    }
+
+    function toggleDocument(id) {
+        document.getElementById(id).classList.toggle('show');
+    }
+
+    document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you! We will schedule a Zoom call with you shortly.');
+        // In production: Send form data to backend
+    });
+
+    document.getElementById('partnerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for your interest! Graham will contact you within 24 hours.');
+        // In production: Send form data to backend
+    });
+</script>
+
 </body>
 </html>
